@@ -20,16 +20,60 @@ define('APP_DIR', BASE_DIR . '/app');
 define('VIEWS_DIR', BASE_DIR . '/views');
 define('PUBLIC_DIR', BASE_DIR . '/public');
 
-// URL Base del proyecto (dinámica)
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost:8000';
-$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-$basePath = str_replace('\\', '/', dirname($scriptName));
-// Normalizar ruta para evitar duplicados
-if (!str_contains($basePath, 'Proyecto_Tienda_online')) {
-    $basePath = '/Proyecto_Tienda_online';
+// Autoloader PSR-4 para cargar automáticamente clases en App\ y Config\
+spl_autoload_register(function ($class) {
+    $prefixes = [
+        'App\\'    => BASE_DIR . '/app/',
+        'Config\\' => BASE_DIR . '/config/',
+    ];
+
+    foreach ($prefixes as $prefix => $baseDir) {
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            continue;
+        }
+
+        $relativeClass = substr($class, $len);
+        $parts = explode('\\', $relativeClass);
+        $className = array_pop($parts);
+
+        // 1. Probar ruta exacta
+        $dirPath = count($parts) > 0 ? implode('/', $parts) . '/' : '';
+        $fileExact = $baseDir . $dirPath . $className . '.php';
+        if (file_exists($fileExact)) {
+            require_once $fileExact;
+            return;
+        }
+
+        // 2. Probar ruta con carpetas en minúsculas (compatibilidad Linux/Docker)
+        $lowerParts = array_map('strtolower', $parts);
+        $lowerDirPath = count($lowerParts) > 0 ? implode('/', $lowerParts) . '/' : '';
+        $fileLower = $baseDir . $lowerDirPath . $className . '.php';
+        if (file_exists($fileLower)) {
+            require_once $fileLower;
+            return;
+        }
+    }
+});
+
+// URL Base del proyecto (dinámica o desde .env)
+$envAppUrl = getenv('APP_URL') ?: ($_ENV['APP_URL'] ?? null);
+if (!empty($envAppUrl)) {
+    define('BASE_URL', rtrim($envAppUrl, '/'));
+} else {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8000';
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $dir = str_replace('\\', '/', dirname($scriptName));
+    
+    // Si viene por CLI o ruta absoluta de servidor, forzar la ruta web estándar
+    if ($dir === '/' || $dir === '.' || str_contains($dir, '/var/www')) {
+        $basePath = '/Proyecto_Tienda_online';
+    } else {
+        $basePath = rtrim($dir, '/');
+    }
+    define('BASE_URL', rtrim($protocol . $host . $basePath, '/'));
 }
-define('BASE_URL', rtrim($protocol . $host . $basePath, '/'));
 
 // Roles de usuario del sistema (coinciden con la tabla `roles`)
 define('ROL_ADMINISTRADOR', 1);
