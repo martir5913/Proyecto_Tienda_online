@@ -1,0 +1,223 @@
+/* =============================================================================
+   ESTILOS PERSONALIZADOS: ELECTROHOGAR - TIENDA EN LINEA
+   Paleta: Slate Dark Navy (#0f172a), Indigo (#4338ca), Slate Light (#f8fafc)
+   Tipografía: Outfit (Títulos) y Plus Jakarta Sans (Cuerpo)
+   Regla: Cero emojis. Iconografía 100% Bootstrap Icons.
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --app-font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --app-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --app-primary: #4338ca;
+    --app-primary-hover: #3730a3;
+    --app-primary-subtle: #e0e7ff;
+    
+    --app-dark: #0f172a;
+    --app-dark-card: #1e293b;
+    --app-bg: #f8fafc;
+    --app-border: #e2e8f0;
+    --app-text: #1e293b;
+    --app-text-muted: #64748b;
+    
+    --app-accent: #d97706;
+    --app-success: #059669;
+    --app-danger: #dc2626;
+    
+    --app-card-radius: 14px;
+    --app-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: var(--app-font-body);
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .price-tag {
+    font-family: var(--app-font-heading);
+    letter-spacing: -0.02em;
+}
+
+/* Navbar Principal */
+.navbar-custom {
+    background-color: var(--app-dark);
+    padding: 0.85rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-custom .navbar-brand {
+    font-weight: 800;
+    font-size: 1.45rem;
+    color: #ffffff;
+}
+
+.navbar-custom .nav-link {
+    color: #cbd5e1;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.85rem;
+    transition: var(--app-transition);
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: #ffffff;
+}
+
+/* Sub-header de Categorías */
+.category-bar {
+    background: #ffffff;
+    border-bottom: 1px solid var(--app-border);
+    padding: 0.5rem 0;
+}
+
+.category-bar .cat-link {
+    color: var(--app-text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    transition: var(--app-transition);
+}
+
+.category-bar .cat-link:hover {
+    color: var(--app-primary);
+    background-color: var(--app-primary-subtle);
+}
+
+/* Tarjetas de Producto */
+.product-card {
+    background: #ffffff;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-card-radius);
+    overflow: hidden;
+    transition: var(--app-transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(15, 23, 42, 0.12);
+    border-color: #cbd5e1;
+}
+
+.product-img-wrapper {
+    position: relative;
+    background: #f1f5f9;
+    padding: 1.5rem;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-img-wrapper img {
+    max-height: 170px;
+    max-width: 100%;
+    object-fit: contain;
+    transition: var(--app-transition);
+}
+
+.product-card:hover .product-img-wrapper img {
+    transform: scale(1.04);
+}
+
+.product-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-brand {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--app-primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+}
+
+.product-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--app-dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+}
+
+.product-price {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--app-dark);
+    margin-top: auto;
+    padding-top: 0.75rem;
+}
+
+/* Botones con estilo moderno */
+.btn-primary-app {
+    background-color: var(--app-primary);
+    border-color: var(--app-primary);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.55rem 1.25rem;
+    border-radius: 10px;
+    transition: var(--app-transition);
+}
+
+.btn-primary-app:hover {
+    background-color: var(--app-primary-hover);
+    border-color: var(--app-primary-hover);
+    color: #ffffff;
+}
+
+/* Badges e Iconos */
+.badge-brand {
+    background-color: var(--app-primary-subtle);
+    color: var(--app-primary);
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 0.35em 0.65em;
+}
+
+/* Footer Corporativo */
+.footer-custom {
+    background-color: var(--app-dark);
+    color: #94a3b8;
+    padding: 3.5rem 0 1.5rem;
+    margin-top: auto;
+}
+
+.footer-custom h5 {
+    color: #ffffff;
+    font-size: 1.05rem;
+    margin-bottom: 1.2rem;
+}
+
+.footer-custom a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: var(--app-transition);
+}
+
+.footer-custom a:hover {
+    color: #ffffff;
+}
+
+/* Alertas Toast */
+.toast-container-custom {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1080;
+}

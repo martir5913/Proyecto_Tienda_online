@@ -1,0 +1,29 @@
+# =============================================================================
+# GITIGNORE - TIENDA EN LINEA DE ELECTRODOMESTICOS
+# =============================================================================
+
+# Variables de entorno sensibles
+.env
+.env.local
+.env.production
+
+# Archivos y carpetas de dependencias y paquetes
+/vendor/
+/node_modules/
+
+# Archivos de configuracion de IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Logs y temporales
+*.log
+/logs/
+/temp/
+/tmp/
+
+# Archivos subidos por usuarios durante pruebas locales
+/public/uploads/temp/
