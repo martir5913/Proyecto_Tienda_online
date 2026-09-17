@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Página Principal (Home)
- */
+// Vista: Página Principal (Home)
 $tituloPagina = "ElectroHogar | Los Mejores Electrodomésticos y Línea Blanca";
 
 require_once dirname(__DIR__) . '/app/controllers/ProductoController.php';

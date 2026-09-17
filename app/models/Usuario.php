@@ -1,8 +1,7 @@
 <?php
-/**
- * Modelo de Usuario
- * Responsable de la persistencia, autenticación y consulta de usuarios y roles.
- */
+ // * Modelo de Usuario
+ // * Responsable de la persistencia, autenticación y consulta de usuarios y roles.
+ 
 
 namespace App\Models;
 
@@ -10,9 +9,8 @@ use PDO;
 
 class Usuario extends Model
 {
-    /**
-     * Busca un usuario por su correo electrónico
-     */
+     // * Busca un usuario por su correo electrónico
+     
     public function buscarPorCorreo(string $correo): ?array
     {
         $stmt = $this->db->prepare(
@@ -26,9 +24,8 @@ class Usuario extends Model
         return $usuario ?: null;
     }
 
-    /**
-     * Registra un nuevo usuario cliente con contraseña cifrada en Bcrypt
-     */
+     // * Registra un nuevo usuario cliente con contraseña cifrada en Bcrypt
+     
     public function registrar(array $datos): int
     {
         $sql = "INSERT INTO usuarios (id_rol, id_estado_usuario, nombre, apellido, correo, password, telefono, direccion) 
@@ -48,9 +45,8 @@ class Usuario extends Model
         return (int)$this->db->lastInsertId();
     }
 
-    /**
-     * Obtiene el listado completo de usuarios para el panel de administración
-     */
+     // * Obtiene el listado completo de usuarios para el panel de administración
+     
     public function obtenerTodos(): array
     {
         $stmt = $this->db->query(

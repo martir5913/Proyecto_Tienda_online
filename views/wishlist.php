@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Lista de Deseos (Wishlist)
- */
+// Vista: Lista de Deseos (Wishlist)
 $tituloPagina = "Lista de Deseos | ElectroHogar";
 
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';

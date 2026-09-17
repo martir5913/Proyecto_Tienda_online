@@ -1,7 +1,6 @@
 <?php
-/**
- * API Endpoint: Pedidos y Checkout Transaccional
- */
+ // * API Endpoint: Pedidos y Checkout Transaccional
+ 
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';

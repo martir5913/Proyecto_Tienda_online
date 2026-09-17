@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Catálogo con Barra Lateral de Filtros Asíncronos
- */
+// Vista: Catálogo con Barra Lateral de Filtros Asíncronos
 $tituloPagina = "Catálogo de Electrodomésticos y Línea Blanca | ElectroHogar";
 $scriptEspecifico = "catalogo.js";
 

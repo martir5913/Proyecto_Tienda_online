@@ -1,8 +1,7 @@
 <?php
-/**
- * API Endpoint: Carrito de Compras
- * Acciones: add, update, remove, get, clear
- */
+// * API Endpoint: Carrito de Compras
+// * Acciones: add, update, remove, get, clear
+ 
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';

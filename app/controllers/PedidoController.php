@@ -1,8 +1,7 @@
 <?php
-/**
- * Controlador de Pedidos y Checkout
- * Coordina la transacción ACID de compra y consulta del historial de órdenes.
- */
+
+ // * Controlador de Pedidos y Checkout
+ // * Coordina la transacción ACID de compra y consulta del historial de órdenes.
 
 namespace App\Controllers;
 
@@ -20,9 +19,8 @@ class PedidoController
         $this->carritoCtrl = new CarritoController();
     }
 
-    /**
-     * Procesa la orden de compra en una transacción ACID
-     */
+    // * Procesa la orden de compra en una transacción ACID
+     
     public function procesarCheckout(int $idUsuario, int $idMetodoPago, string $direccionEnvio, string $notas = ''): array
     {
         $resumen = $this->carritoCtrl->obtenerResumen();
@@ -57,9 +55,8 @@ class PedidoController
         }
     }
 
-    /**
-     * Obtiene el historial de pedidos del usuario autenticado
-     */
+    // * Obtiene el historial de pedidos del usuario autenticado
+     
     public function getHistorial(int $idUsuario): array
     {
         return $this->pedidoModel->obtenerPorUsuario($idUsuario);

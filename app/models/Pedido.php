@@ -1,8 +1,7 @@
 <?php
-/**
- * Modelo de Pedido
- * Implementa transacciones ACID en la creación de órdenes y reducción de inventario.
- */
+ // * Modelo de Pedido
+ // * Implementa transacciones ACID en la creación de órdenes y reducción de inventario.
+ 
 
 namespace App\Models;
 
@@ -11,9 +10,8 @@ use PDO;
 
 class Pedido extends Model
 {
-    /**
-     * Registra un pedido transaccional garantizando propiedades ACID
-     */
+     // * Registra un pedido transaccional garantizando propiedades ACID
+     
     public function crearPedidoTransaccional(int $idUsuario, int $idMetodoPago, string $direccionEnvio, array $itemsCarrito, string $notas = ''): array
     {
         if (empty($itemsCarrito)) {
@@ -125,9 +123,8 @@ class Pedido extends Model
         }
     }
 
-    /**
-     * Obtiene los pedidos realizados por un cliente específico
-     */
+     // * Obtiene los pedidos realizados por un cliente específico
+     
     public function obtenerPorUsuario(int $idUsuario): array
     {
         $stmt = $this->db->prepare(

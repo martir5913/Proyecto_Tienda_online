@@ -1,7 +1,6 @@
 <?php
-/**
- * Controlador de Categorías
- */
+ // * Controlador de Categorías
+ 
 
 namespace App\Controllers;
 

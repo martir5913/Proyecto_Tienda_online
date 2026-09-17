@@ -1,8 +1,6 @@
 <?php
-/**
- * Configuración General del Sistema
- * Define constantes globales, inicializa la sesión y helpers de seguridad.
- */
+ // * Configuración General del Sistema
+ // * Define constantes globales, inicializa la sesión y helpers de seguridad.
 
 // Iniciar sesión si no está iniciada
 if (session_status() === PHP_SESSION_NONE) {
@@ -79,9 +77,7 @@ if (!empty($envAppUrl)) {
 define('ROL_ADMINISTRADOR', 1);
 define('ROL_CLIENTE', 2);
 
-/**
- * Función helper para responder JSON estandarizado en APIs
- */
+// Función helper para responder JSON estandarizado en APIs
 function jsonResponse(bool $success, string $message, mixed $data = null, int $statusCode = 200): void
 {
     http_response_code($statusCode);
@@ -95,17 +91,13 @@ function jsonResponse(bool $success, string $message, mixed $data = null, int $s
     exit;
 }
 
-/**
- * Helper para verificar si el usuario actual es Administrador
- */
+// Helper para verificar si el usuario actual es Administrador
 function esAdmin(): bool
 {
     return isset($_SESSION['usuario']) && (int)($_SESSION['usuario']['id_rol'] ?? 0) === ROL_ADMINISTRADOR;
 }
 
-/**
- * Helper para verificar si hay un usuario autenticado
- */
+// Helper para verificar si hay un usuario autenticado
 function estaAutenticado(): bool
 {
     return isset($_SESSION['usuario']) && !empty($_SESSION['usuario']['id_usuario']);

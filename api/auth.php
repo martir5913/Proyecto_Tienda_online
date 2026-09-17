@@ -1,8 +1,7 @@
 <?php
-/**
- * API Endpoint: Autenticación de Usuarios
- * Acciones soportadas: login, registro, logout, check
- */
+ // * API Endpoint: Autenticación de Usuarios
+ // * Acciones soportadas: login, registro, logout, check
+ 
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';

@@ -1,7 +1,5 @@
 <?php
-/**
- * Header Global - Layout Principal
- */
+// Header Global - Layout Principal
 require_once dirname(__DIR__, 2) . '/config/config.php';
 require_once dirname(__DIR__, 2) . '/app/controllers/CarritoController.php';
 

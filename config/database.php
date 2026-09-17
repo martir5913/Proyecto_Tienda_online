@@ -1,8 +1,8 @@
 <?php
-/**
- * Clase de Conexión a Base de Datos (PDO Singleton)
- * Provee una única instancia de conexión para evitar sobrecarga y asegurar ACID.
- */
+
+ // * Clase de Conexión a Base de Datos (PDO Singleton)
+ // * Provee una única instancia de conexión para evitar sobrecarga y asegurar ACID.
+
 
 namespace Config;
 
@@ -13,9 +13,7 @@ class Database
 {
     private static ?PDO $instance = null;
 
-    /**
-     * Carga variables desde el archivo .env si existe
-     */
+    // Carga variables desde el archivo .env si existe
     private static function loadEnv(string $path): void
     {
         if (!file_exists($path)) {
@@ -43,9 +41,7 @@ class Database
         }
     }
 
-    /**
-     * Obtiene la conexión PDO activa o crea una nueva si no existe
-     */
+    // Obtiene la conexión PDO activa o crea una nueva si no existe
     public static function getConnection(): PDO
     {
         if (self::$instance === null) {

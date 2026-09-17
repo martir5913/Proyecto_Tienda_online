@@ -1,8 +1,7 @@
 <?php
-/**
- * Controlador de Productos
- * Maneja listado de catálogo, búsqueda asíncrona, ficha de producto y CRUD administrativo.
- */
+ // * Controlador de Productos
+ // * Maneja listado de catálogo, búsqueda asíncrona, ficha de producto y CRUD administrativo.
+ 
 
 namespace App\Controllers;
 
@@ -23,25 +22,22 @@ class ProductoController
         $this->marcaModel = new Marca();
     }
 
-    /**
-     * Retorna productos destacados para la página de inicio
-     */
+    // * Retorna productos destacados para la página de inicio
+     
     public function getDestacados(): array
     {
         return $this->productoModel->obtenerDestacados(8);
     }
 
-    /**
-     * Retorna listado de catálogo con filtros aplicados
-     */
+    // * Retorna listado de catálogo con filtros aplicados
+    
     public function getCatalogo(array $filtros = []): array
     {
         return $this->productoModel->obtenerCatalogo($filtros);
     }
 
-    /**
-     * Retorna el detalle de un producto específico
-     */
+    // * Retorna el detalle de un producto específico
+     
     public function getDetalle(int $id): ?array
     {
         return $this->productoModel->obtenerPorId($id);

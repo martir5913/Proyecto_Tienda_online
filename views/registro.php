@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Registro de Nuevo Usuario Cliente
- */
+// Vista: Registro de Nuevo Usuario Cliente
 $tituloPagina = "Crear Cuenta | ElectroHogar";
 
 require_once dirname(__DIR__) . '/config/config.php';

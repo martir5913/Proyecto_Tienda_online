@@ -1,8 +1,7 @@
 <?php
-/**
- * Clase Base Model
- * Proporciona acceso a la instancia PDO compartida y métodos comunes de consulta.
- */
+ // * Clase Base Model
+ // * Proporciona acceso a la instancia PDO compartida y métodos comunes de consulta.
+ 
 
 namespace App\Models;
 

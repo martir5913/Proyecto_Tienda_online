@@ -1,8 +1,7 @@
 <?php
-/**
- * Modelo de Producto (Electrodomésticos y Línea Blanca)
- * Maneja catálogo, filtros por marca/precio/categoría y operaciones CRUD.
- */
+ // * Modelo de Producto (Electrodomésticos y Línea Blanca)
+ // * Maneja catálogo, filtros por marca/precio/categoría y operaciones CRUD.
+ 
 
 namespace App\Models;
 
@@ -10,9 +9,8 @@ use PDO;
 
 class Producto extends Model
 {
-    /**
-     * Obtiene el listado de productos con filtros dinámicos
-     */
+     // * Obtiene el listado de productos con filtros dinámicos
+     
     public function obtenerCatalogo(array $filtros = []): array
     {
         $sql = "SELECT p.*, c.nombre_categoria, m.nombre_marca, ep.nombre_estado as estado_nombre,
@@ -59,9 +57,8 @@ class Producto extends Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Obtiene un producto por su ID incluyendo marca y categoría
-     */
+     // * Obtiene un producto por su ID incluyendo marca y categoría
+     
     public function obtenerPorId(int $idProducto): ?array
     {
         $sql = "SELECT p.*, c.nombre_categoria, m.nombre_marca, ep.nombre_estado as estado_nombre
@@ -77,9 +74,8 @@ class Producto extends Model
         return $producto ?: null;
     }
 
-    /**
-     * Obtiene productos destacados para la portada (Home)
-     */
+     // * Obtiene productos destacados para la portada (Home)
+     
     public function obtenerDestacados(int $limite = 6): array
     {
         $sql = "SELECT p.*, c.nombre_categoria, m.nombre_marca 
@@ -95,9 +91,8 @@ class Producto extends Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Guarda un nuevo producto (Admin)
-     */
+     // * Guarda un nuevo producto (Admin)
+     
     public function crear(array $datos): int
     {
         $sql = "INSERT INTO productos (id_categoria, id_marca, id_estado_producto, codigo_modelo, nombre, descripcion, especificaciones, precio, stock, imagen, destacado)

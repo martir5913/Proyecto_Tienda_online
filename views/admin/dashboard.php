@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Dashboard de Administración
- */
+// Vista: Dashboard de Administración
 $tituloPagina = "Panel Administrador | ElectroHogar";
 $scriptEspecifico = "admin.js";
 

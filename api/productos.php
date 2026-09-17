@@ -1,7 +1,6 @@
 <?php
-/**
- * API Endpoint: Productos (Catálogo, Filtros y Detalle)
- */
+ // * API Endpoint: Productos (Catálogo, Filtros y Detalle)
+ 
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';

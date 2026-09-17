@@ -1,6 +1,4 @@
-/**
- * JavaScript para el Módulo de Catálogo y Filtros Asíncronos
- */
+// JavaScript para el Módulo de Catálogo y Filtros Asíncronos
 
 const CatalogoModulo = {
     init() {
@@ -65,7 +63,7 @@ const CatalogoModulo = {
                         <h3 class="product-title">${p.nombre}</h3>
                         <p class="text-muted small mb-2">${p.especificaciones ? p.especificaciones.substring(0, 70) + '...' : ''}</p>
                         <div class="d-flex justify-content-between align-items-center mt-auto">
-                            <span class="product-price">Q ${parseFloat(p.precio).toLocaleString('es-GT', {minimumFractionDigits: 2})}</span>
+                            <span class="product-price">Q ${parseFloat(p.precio).toLocaleString('es-GT', { minimumFractionDigits: 2 })}</span>
                             <button class="btn btn-sm btn-primary-app" onclick="ElectroApp.agregarAlCarrito(${p.id_producto})">
                                 <i class="bi bi-cart-plus me-1"></i> Agregar
                             </button>

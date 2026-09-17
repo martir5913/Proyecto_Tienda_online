@@ -1,7 +1,5 @@
-/**
- * JavaScript Global de la Aplicación: ElectroHogar
- * Notificaciones Toast, utilidades de carrito y eventos compartidos
- */
+// JavaScript Global de la Aplicación: ElectroHogar
+// Notificaciones Toast, utilidades de carrito y eventos compartidos
 
 const ElectroApp = {
     // Muestra notificaciones flotantes con Bootstrap Toast

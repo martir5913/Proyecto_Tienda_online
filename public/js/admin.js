@@ -1,6 +1,4 @@
-/**
- * JavaScript para el Panel Administrativo
- */
+// JavaScript para el Panel Administrativo
 
 const AdminModulo = {
     confirmarEliminar(tipo, id, nombre) {

@@ -1,9 +1,5 @@
 <?php
-/**
- * API de Diagnóstico y Comprobación de Conexión a Base de Datos
- * Endpoint: /api/test_db.php
- * Verifica conexión PDO, tablas normalizadas, registros semilla y soporte de transacciones ACID.
- */
+// Test DB
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';

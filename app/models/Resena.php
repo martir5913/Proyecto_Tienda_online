@@ -1,7 +1,6 @@
 <?php
-/**
- * Modelo de Reseñas y Calificaciones
- */
+ //* Modelo de Reseñas y Calificaciones
+ 
 
 namespace App\Models;
 
@@ -9,9 +8,8 @@ use PDO;
 
 class Resena extends Model
 {
-    /**
-     * Obtiene las reseñas aprobadas de un producto
-     */
+    // * Obtiene las reseñas aprobadas de un producto
+    
     public function obtenerPorProducto(int $idProducto): array
     {
         $stmt = $this->db->prepare(
@@ -25,9 +23,8 @@ class Resena extends Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Registra una nueva reseña
-     */
+     // * Registra una nueva reseña
+     
     public function crear(int $idUsuario, int $idProducto, int $calificacion, string $comentario): bool
     {
         $stmt = $this->db->prepare(

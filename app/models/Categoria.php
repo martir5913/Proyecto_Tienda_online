@@ -1,7 +1,6 @@
 <?php
-/**
- * Modelo de Categoria
- */
+ // * Modelo de Categoria
+ 
 
 namespace App\Models;
 
@@ -9,9 +8,8 @@ use PDO;
 
 class Categoria extends Model
 {
-    /**
-     * Obtiene todas las categorías activas
-     */
+     // * Obtiene todas las categorías activas
+     
     public function obtenerTodas(): array
     {
         $stmt = $this->db->query(

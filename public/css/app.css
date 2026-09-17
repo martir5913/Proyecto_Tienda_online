@@ -1,31 +1,29 @@
-/* =============================================================================
-   ESTILOS PERSONALIZADOS: ELECTROHOGAR - TIENDA EN LINEA
+/* ESTILOS ELECTROHOGAR - TIENDA EN LINEA
    Paleta: Slate Dark Navy (#0f172a), Indigo (#4338ca), Slate Light (#f8fafc)
    Tipografía: Outfit (Títulos) y Plus Jakarta Sans (Cuerpo)
-   Regla: Cero emojis. Iconografía 100% Bootstrap Icons.
-   ============================================================================= */
+   Regla: Cero emojis. Iconografía 100% Bootstrap Icons. */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
     --app-font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     --app-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    
+
     --app-primary: #4338ca;
     --app-primary-hover: #3730a3;
     --app-primary-subtle: #e0e7ff;
-    
+
     --app-dark: #0f172a;
     --app-dark-card: #1e293b;
     --app-bg: #f8fafc;
     --app-border: #e2e8f0;
     --app-text: #1e293b;
     --app-text-muted: #64748b;
-    
+
     --app-accent: #d97706;
     --app-success: #059669;
     --app-danger: #dc2626;
-    
+
     --app-card-radius: 14px;
     --app-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -39,7 +37,14 @@ body {
     flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand, .price-tag {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand,
+.price-tag {
     font-family: var(--app-font-heading);
     letter-spacing: -0.02em;
 }

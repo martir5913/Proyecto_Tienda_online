@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Inicio de Sesión
- */
+// Vista: Inicio de Sesión
 $tituloPagina = "Iniciar Sesión | ElectroHogar";
 
 require_once dirname(__DIR__) . '/config/config.php';

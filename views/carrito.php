@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Carrito de Compras y Checkout Transaccional
- */
+// Vista: Carrito de Compras y Checkout Transaccional
 $tituloPagina = "Carrito de Compras | ElectroHogar";
 $scriptEspecifico = "carrito.js";
 

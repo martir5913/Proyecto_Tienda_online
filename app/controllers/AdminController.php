@@ -1,8 +1,7 @@
 <?php
-/**
- * Controlador del Panel de Administración
- * Coordina las métricas de rendimiento, inventario y gestión integral del sistema.
- */
+ // * Controlador del Panel de Administración
+ // * Coordina las métricas de rendimiento, inventario y gestión integral del sistema.
+ 
 
 namespace App\Controllers;
 
@@ -18,9 +17,8 @@ class AdminController
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Retorna las métricas del dashboard administrativo
-     */
+    // * Retorna las métricas del dashboard administrativo
+    
     public function getMetricasDashboard(): array
     {
         $ventasTotales = $this->db->query("SELECT COALESCE(SUM(total), 0) FROM pedidos WHERE id_estado_pedido != 5")->fetchColumn();

@@ -1,8 +1,7 @@
 <?php
-/**
- * Controlador de Autenticación
- * Maneja login, registro y cierre de sesión de usuarios.
- */
+ // * Controlador de Autenticación
+ // * Maneja login, registro y cierre de sesión de usuarios.
+ 
 
 namespace App\Controllers;
 
@@ -17,9 +16,8 @@ class AuthController
         $this->usuarioModel = new Usuario();
     }
 
-    /**
-     * Procesa el inicio de sesión
-     */
+    // * Procesa el inicio de sesión
+    
     public function login(string $correo, string $password): array
     {
         $usuario = $this->usuarioModel->buscarPorCorreo($correo);
@@ -41,9 +39,8 @@ class AuthController
         return ['success' => true, 'message' => 'Sesión iniciada correctamente.', 'usuario' => $_SESSION['usuario']];
     }
 
-    /**
-     * Procesa el registro de un nuevo cliente
-     */
+    // * Procesa el registro de un nuevo cliente
+    
     public function registrar(array $datos): array
     {
         // Validar si el correo ya existe
@@ -56,9 +53,8 @@ class AuthController
         return ['success' => true, 'message' => 'Usuario registrado exitosamente.', 'id_usuario' => $id];
     }
 
-    /**
-     * Cierra la sesión activa
-     */
+    // * Cierra la sesión activa
+     
     public function logout(): void
     {
         unset($_SESSION['usuario']);

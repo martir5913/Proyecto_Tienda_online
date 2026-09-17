@@ -1,7 +1,5 @@
 <?php
-/**
- * Vista: Historial de Compras del Cliente (Mis Pedidos)
- */
+// Vista: Historial de Compras del Cliente (Mis Pedidos)
 $tituloPagina = "Mis Pedidos | ElectroHogar";
 
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';

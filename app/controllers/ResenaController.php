@@ -1,7 +1,6 @@
 <?php
-/**
- * Controlador de Reseñas y Calificaciones
- */
+ // * Controlador de Reseñas y Calificaciones
+ 
 
 namespace App\Controllers;
 

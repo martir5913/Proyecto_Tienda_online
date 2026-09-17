@@ -1,6 +1,4 @@
-/**
- * JavaScript para el Módulo de Carrito de Compras y Checkout
- */
+// JavaScript para el Módulo de Carrito de Compras y Checkout
 
 const CarritoModulo = {
     async actualizarCantidad(idProducto, cantidad) {
