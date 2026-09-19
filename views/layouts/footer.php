@@ -55,7 +55,11 @@
     <!-- App Main JS -->
     <script src="<?= BASE_URL ?>/public/js/app.js"></script>
     <?php if (isset($scriptEspecifico)): ?>
-        <script src="<?= BASE_URL ?>/public/js/<?= $scriptEspecifico ?>"></script>
+        <?php
+        $rutaScript = PUBLIC_DIR . '/js/' . $scriptEspecifico;
+        $versionScript = file_exists($rutaScript) ? filemtime($rutaScript) : time();
+        ?>
+        <script src="<?= BASE_URL ?>/public/js/<?= $scriptEspecifico ?>?v=<?= $versionScript ?>"></script>
     <?php endif; ?>
 </body>
 </html>

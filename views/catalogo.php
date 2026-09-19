@@ -50,7 +50,7 @@ require_once __DIR__ . '/layouts/header.php';
                     <!-- Búsqueda rápida -->
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Búsqueda rápida</label>
-                        <input type="text" id="input-busqueda-catalogo" name="q" class="form-control form-control-sm" 
+                        <input type="text" id="input-busqueda-catalogo" name="q" class="form-control form-control-sm"
                                value="<?= htmlspecialchars($filtros['busqueda']) ?>" placeholder="Nombre o modelo...">
                     </div>
 
@@ -93,10 +93,13 @@ require_once __DIR__ . '/layouts/header.php';
         <section class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold mb-0">Catálogo de Productos</h4>
-                <span class="text-muted small">Mostrando <?= count($productos) ?> artículos</span>
+                <span class="text-muted small" id="catalogo-contador">Mostrando <?= count($productos) ?> artículos</span>
             </div>
 
-            <div class="row g-3" id="grid-productos">
+            <div class="row g-3"
+                 id="grid-productos"
+                 data-api-url="<?= BASE_URL ?>/api/productos.php"
+                 data-base-url="<?= BASE_URL ?>">
                 <?php if (empty($productos)): ?>
                     <div class="col-12 text-center py-5">
                         <i class="bi bi-inbox fs-1 text-muted"></i>
@@ -104,20 +107,58 @@ require_once __DIR__ . '/layouts/header.php';
                     </div>
                 <?php else: ?>
                     <?php foreach ($productos as $p): ?>
+                        <?php
+                        $stock = (int)($p['stock'] ?? 0);
+                        $disponible = $stock > 0;
+                        $nombreProducto = htmlspecialchars($p['nombre']);
+                        $imagen = trim((string)($p['imagen'] ?? ''));
+                        ?>
                         <div class="col-md-6 col-lg-4 mb-3">
                             <div class="product-card">
                                 <div class="product-img-wrapper">
-                                    <i class="bi bi-box-seam fs-1 text-muted"></i>
+                                    <?php if ($imagen !== ''): ?>
+                                        <img src="<?= BASE_URL ?>/public/img/productos/<?= rawurlencode($imagen) ?>"
+                                             alt="<?= $nombreProducto ?>"
+                                             loading="lazy"
+                                             onerror="this.classList.add('d-none'); this.nextElementSibling.classList.remove('d-none');">
+                                        <i class="bi bi-box-seam fs-1 text-muted d-none" aria-hidden="true"></i>
+                                    <?php else: ?>
+                                        <i class="bi bi-box-seam fs-1 text-muted" aria-hidden="true"></i>
+                                    <?php endif; ?>
                                 </div>
+
                                 <div class="product-card-body">
                                     <span class="product-brand"><?= htmlspecialchars($p['nombre_marca']) ?></span>
-                                    <h3 class="product-title"><?= htmlspecialchars($p['nombre']) ?></h3>
-                                    <p class="text-muted small mb-2"><?= htmlspecialchars(substr($p['especificaciones'] ?? '', 0, 65)) ?>...</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
-                                        <span class="product-price">Q <?= number_format($p['precio'], 2) ?></span>
-                                        <button class="btn btn-sm btn-primary-app" onclick="ElectroApp.agregarAlCarrito(<?= $p['id_producto'] ?>)">
-                                            <i class="bi bi-cart-plus me-1"></i> Añadir
-                                        </button>
+                                    <h3 class="product-title"><?= $nombreProducto ?></h3>
+
+                                    <div class="small text-muted mb-2">
+                                        <i class="bi bi-grid me-1"></i><?= htmlspecialchars($p['nombre_categoria']) ?>
+                                    </div>
+
+                                    <p class="text-muted small mb-2">
+                                        <?= htmlspecialchars(mb_strimwidth($p['especificaciones'] ?? '', 0, 68, '...')) ?>
+                                    </p>
+
+                                    <div class="small mb-2 <?= $disponible ? 'text-success' : 'text-danger' ?>">
+                                        <i class="bi <?= $disponible ? 'bi-check-circle' : 'bi-x-circle' ?> me-1"></i>
+                                        <?= $disponible ? 'Disponible (' . $stock . ' en stock)' : 'Agotado' ?>
+                                    </div>
+
+                                    <div class="mt-auto pt-2 border-top">
+                                        <div class="product-price mb-2">Q <?= number_format((float)$p['precio'], 2) ?></div>
+                                        <div class="d-flex gap-2">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary flex-grow-1 btn-detalle-producto"
+                                                    data-producto-id="<?= (int)$p['id_producto'] ?>">
+                                                <i class="bi bi-eye me-1"></i> Ver detalles
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-primary-app"
+                                                    onclick="ElectroApp.agregarAlCarrito(<?= (int)$p['id_producto'] ?>)"
+                                                    <?= $disponible ? '' : 'disabled' ?>>
+                                                <i class="bi bi-cart-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -126,6 +167,24 @@ require_once __DIR__ . '/layouts/header.php';
                 <?php endif; ?>
             </div>
         </section>
+    </div>
+</div>
+
+<!-- Modal de detalle. Usa Bootstrap existente; no cambia la paleta ni el layout principal. -->
+<div class="modal fade" id="modalDetalleProducto" tabindex="-1" aria-labelledby="modalDetalleProductoTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="modalDetalleProductoTitulo">Detalle del producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="modalDetalleProductoContenido">
+                <div class="text-center py-4 text-muted">
+                    <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+                    <span class="ms-2">Cargando información...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -1,6 +1,7 @@
 <?php
 // Vista: Página Principal (Home)
 $tituloPagina = "ElectroHogar | Los Mejores Electrodomésticos y Línea Blanca";
+$scriptEspecifico = "catalogo.js";
 
 require_once dirname(__DIR__) . '/app/controllers/ProductoController.php';
 use App\Controllers\ProductoController;
@@ -89,23 +90,67 @@ require_once __DIR__ . '/layouts/header.php';
             </a>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4"
+            id="grid-productos"
+            data-api-url="<?= BASE_URL ?>/api/productos.php"
+            data-base-url="<?= BASE_URL ?>">
+            
             <?php foreach ($destacados as $prod): ?>
                 <div class="col-sm-6 col-lg-3">
                     <div class="product-card">
-                        <div class="product-img-wrapper">
-                            <i class="bi bi-box-seam fs-1 text-muted"></i>
+                      <div class="product-img-wrapper">
+                            <?php if (!empty($prod['imagen'])): ?>
+
+                                <img
+                                    src="<?= BASE_URL ?>/public/img/productos/<?= rawurlencode($prod['imagen']) ?>"
+                                    alt="<?= htmlspecialchars($prod['nombre']) ?>"
+                                    loading="lazy"
+                                    onerror="
+                                        this.classList.add('d-none');
+                                        this.nextElementSibling.classList.remove('d-none');
+                                    "
+                                >
+
+                                <i class="bi bi-box-seam fs-1 text-muted d-none"></i>
+
+                            <?php else: ?>
+
+                                <i class="bi bi-box-seam fs-1 text-muted"></i>
+
+                            <?php endif; ?>
                         </div>
                         <div class="product-card-body">
                             <span class="product-brand"><?= htmlspecialchars($prod['nombre_marca']) ?></span>
                             <h3 class="product-title"><?= htmlspecialchars($prod['nombre']) ?></h3>
                             <div class="text-muted small mb-3">Modelo: <?= htmlspecialchars($prod['codigo_modelo']) ?></div>
-                            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
-                                <span class="product-price">Q <?= number_format($prod['precio'], 2) ?></span>
-                                <button class="btn btn-sm btn-primary-app" onclick="ElectroApp.agregarAlCarrito(<?= $prod['id_producto'] ?>)">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
+                                <div class="mt-auto pt-2 border-top">
+
+                                    <div class="product-price mb-2">
+                                        Q <?= number_format((float)$prod['precio'], 2) ?>
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-primary flex-grow-1 btn-detalle-producto"
+                                            data-producto-id="<?= (int)$prod['id_producto'] ?>"
+                                        >
+                                            <i class="bi bi-eye me-1"></i>
+                                            Ver detalles
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-primary-app"
+                                            onclick="ElectroApp.agregarAlCarrito(<?= (int)$prod['id_producto'] ?>)"
+                                        >
+                                            <i class="bi bi-cart-plus"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -113,5 +158,61 @@ require_once __DIR__ . '/layouts/header.php';
         </div>
     </div>
 </section>
+
+<!-- Modal de detalle del producto -->
+<div
+    class="modal fade"
+    id="modalDetalleProducto"
+    tabindex="-1"
+    aria-labelledby="modalDetalleProductoTitulo"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header">
+
+                <h5
+                    class="modal-title fw-bold"
+                    id="modalDetalleProductoTitulo"
+                >
+                    Detalle del producto
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                ></button>
+
+            </div>
+
+            <div
+                class="modal-body"
+                id="modalDetalleProductoContenido"
+            >
+
+                <div class="text-center py-4 text-muted">
+
+                    <div
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></div>
+
+                    <span class="ms-2">
+                        Cargando información...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
 <?php require_once __DIR__ . '/layouts/footer.php'; ?>
