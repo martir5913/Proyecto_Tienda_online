@@ -19,7 +19,15 @@ $totalCarrito = $carritoCtrl->contarItems();
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="<?= BASE_URL ?>/public/css/app.css" rel="stylesheet">
+    <?php
+    $rutaCss = PUBLIC_DIR . '/css/app.css';
+    $versionCss = file_exists($rutaCss) ? filemtime($rutaCss) : time();
+    ?>
+
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/public/css/app.css?v=<?= $versionCss ?>"
+    >
 </head>
 <body>
 
