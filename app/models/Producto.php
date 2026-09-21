@@ -67,12 +67,20 @@ class Producto extends Model
             $params[':marca'] = [$marca, PDO::PARAM_INT];
         }
 
-        $busqueda = $this->normalizarBusqueda($filtros['busqueda'] ?? null);
+      $busqueda = $this->normalizarBusqueda($filtros['busqueda'] ?? null);
+
         if ($busqueda !== null) {
-            $sql .= ' AND (p.nombre LIKE :busqueda
-                           OR p.descripcion LIKE :busqueda
-                           OR p.codigo_modelo LIKE :busqueda)';
-            $params[':busqueda'] = [$busqueda, PDO::PARAM_STR];
+            $sql .= " AND (
+                p.nombre LIKE :busqueda_nombre ESCAPE '!'
+                OR p.descripcion LIKE :busqueda_descripcion ESCAPE '!'
+                OR p.codigo_modelo LIKE :busqueda_modelo ESCAPE '!'
+                OR m.nombre_marca LIKE :busqueda_marca ESCAPE '!'
+            )";
+
+            $params[':busqueda_nombre'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_descripcion'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_modelo'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_marca'] = [$busqueda, PDO::PARAM_STR];
         }
 
         $precioMin = $this->decimalONulo($filtros['precio_min'] ?? null);
@@ -128,15 +136,20 @@ class Producto extends Model
             $params[':marca'] = [$marca, PDO::PARAM_INT];
         }
 
-        $busqueda = $this->normalizarBusqueda($filtros['busqueda'] ?? null);
+       $busqueda = $this->normalizarBusqueda($filtros['busqueda'] ?? null);
         if ($busqueda !== null) {
-            $sql .= ' AND (p.nombre LIKE :busqueda
-                           OR p.descripcion LIKE :busqueda
-                           OR p.codigo_modelo LIKE :busqueda)';
-            $params[':busqueda'] = [$busqueda, PDO::PARAM_STR];
-        }
+            $sql .= " AND (
+                p.nombre LIKE :busqueda_nombre ESCAPE '!'
+                OR p.descripcion LIKE :busqueda_descripcion ESCAPE '!'
+                OR p.codigo_modelo LIKE :busqueda_modelo ESCAPE '!'
+                OR m.nombre_marca LIKE :busqueda_marca ESCAPE '!'
+            )";
 
-        return (int) $this->ejecutar($sql, $params)->fetchColumn();
+            $params[':busqueda_nombre'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_descripcion'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_modelo'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_marca'] = [$busqueda, PDO::PARAM_STR];
+        }
     }
 
     // Obtiene un producto público por ID (solo si está disponible).
@@ -198,12 +211,17 @@ class Producto extends Model
 
         $params = [];
 
-        $busqueda = $this->normalizarBusqueda($filtros['busqueda'] ?? null);
+       $busqueda = $this->normalizarBusqueda($filtros['busqueda'] ?? null);
         if ($busqueda !== null) {
-            $sql .= ' AND (p.nombre LIKE :busqueda
-                           OR p.codigo_modelo LIKE :busqueda
-                           OR m.nombre_marca LIKE :busqueda)';
-            $params[':busqueda'] = [$busqueda, PDO::PARAM_STR];
+            $sql .= " AND (
+                p.nombre LIKE :busqueda_nombre ESCAPE '!'
+                OR p.codigo_modelo LIKE :busqueda_modelo ESCAPE '!'
+                OR m.nombre_marca LIKE :busqueda_marca ESCAPE '!'
+            )";
+
+            $params[':busqueda_nombre'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_modelo'] = [$busqueda, PDO::PARAM_STR];
+            $params[':busqueda_marca'] = [$busqueda, PDO::PARAM_STR];
         }
 
         $categoria = $this->idPositivoONulo($filtros['categoria'] ?? null);
@@ -395,8 +413,14 @@ class Producto extends Model
         // Limita la longitud: entradas gigantes son un vector de denegación de servicio.
         $texto = mb_substr($texto, 0, 100);
 
-        // Escapa \ % _ para que se traten como literales.
-        $texto = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $texto);
+        $texto = strtr(
+            $texto,
+            [
+                '!' => '!!',
+                '%' => '!%',
+                '_' => '!_',
+            ]
+        );
 
         return '%' . $texto . '%';
     }
