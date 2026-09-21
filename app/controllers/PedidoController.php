@@ -2,11 +2,14 @@
 
  // * Controlador de Pedidos y Checkout
  // * Coordina la transacción ACID de compra y consulta del historial de órdenes.
+declare(strict_types=1);
 
 namespace App\Controllers;
 
 use App\Models\Pedido;
-use Exception;
+use DomainException;
+use InvalidArgumentException;
+use Throwable;
 
 class PedidoController
 {
@@ -19,13 +22,22 @@ class PedidoController
         $this->carritoCtrl = new CarritoController();
     }
 
-    // * Procesa la orden de compra en una transacción ACID
-     
-    public function procesarCheckout(int $idUsuario, int $idMetodoPago, string $direccionEnvio, string $notas = ''): array
-    {
+    /**
+     * RF11: registra el pedido usando el carrito actual del usuario.
+     */
+    public function procesarCheckout(
+        int $idUsuario,
+        int $idMetodoPago,
+        string $direccionEnvio,
+        string $notas = ''
+    ): array {
         $resumen = $this->carritoCtrl->obtenerResumen();
+
         if (empty($resumen['items'])) {
-            return ['success' => false, 'message' => 'No hay artículos en el carrito para procesar.'];
+            return [
+                'success' => false,
+                'message' => 'No hay artículos en el carrito para procesar.',
+            ];
         }
 
         try {
@@ -37,26 +49,34 @@ class PedidoController
                 $notas
             );
 
-            // Si la transacción fue exitosa, vaciar el carrito
+            // El carrito se vacía únicamente después de confirmar la transacción.
             $this->carritoCtrl->vaciar();
 
             return [
-                'success'       => true,
-                'message'       => 'Pedido registrado exitosamente.',
-                'id_pedido'     => $resultado['id_pedido'],
+                'success' => true,
+                'message' => 'Pedido registrado exitosamente.',
+                'id_pedido' => $resultado['id_pedido'],
                 'numero_pedido' => $resultado['numero_pedido'],
-                'total'         => $resultado['total']
+                'subtotal' => $resultado['subtotal'],
+                'impuesto' => $resultado['impuesto'],
+                'total' => $resultado['total'],
             ];
-        } catch (Exception $e) {
+        } catch (InvalidArgumentException | DomainException $e) {
             return [
                 'success' => false,
-                'message' => 'Error al procesar el pedido: ' . $e->getMessage()
+                'message' => $e->getMessage(),
+            ];
+        } catch (Throwable $e) {
+            // El detalle técnico se registra en el servidor, no se expone al cliente.
+            error_log('RF11 checkout: ' . $e->getMessage());
+
+            return [
+                'success' => false,
+                'message' => 'No fue posible registrar el pedido. Inténtalo nuevamente.',
             ];
         }
     }
 
-    // * Obtiene el historial de pedidos del usuario autenticado
-     
     public function getHistorial(int $idUsuario): array
     {
         return $this->pedidoModel->obtenerPorUsuario($idUsuario);

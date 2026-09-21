@@ -12,9 +12,19 @@ use Config\Database;
 $carritoCtrl = new CarritoController();
 $resumen = $carritoCtrl->obtenerResumen();
 
-// Obtener métodos de pago activos
+// Token CSRF exclusivo para confirmar pedidos.
+if (estaAutenticado() && empty($_SESSION['csrf_checkout'])) {
+    $_SESSION['csrf_checkout'] = bin2hex(random_bytes(32));
+}
+
+// Obtener únicamente los métodos de pago activos con proyección explícita.
 $db = Database::getConnection();
-$metodosPago = $db->query("SELECT * FROM metodos_pago WHERE activo = 1")->fetchAll();
+$stmtMetodosPago = $db->prepare(
+    "SELECT id_metodo_pago, nombre_metodo FROM metodos_pago WHERE activo = :activo ORDER BY id_metodo_pago ASC"
+);
+$stmtMetodosPago->bindValue(':activo', 1, PDO::PARAM_INT);
+$stmtMetodosPago->execute();
+$metodosPago = $stmtMetodosPago->fetchAll(PDO::FETCH_ASSOC);
 
 require_once __DIR__ . '/layouts/header.php';
 ?>
@@ -106,9 +116,16 @@ require_once __DIR__ . '/layouts/header.php';
 
                     <?php if (estaAutenticado()): ?>
                         <form onsubmit="CarritoModulo.realizarCheckout(event)">
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="<?= htmlspecialchars($_SESSION['csrf_checkout'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
+
                             <div class="mb-3">
                                 <label class="form-label small fw-semibold">Dirección de Entrega</label>
-                                <textarea name="direccion_envio" class="form-control form-control-sm" rows="2" required 
+                                <textarea name="direccion_envio" class="form-control form-control-sm" rows="2" required maxlength="500"
+                                          autocomplete="street-address"
                                           placeholder="Calle, número de casa, zona, municipio..."><?= htmlspecialchars($_SESSION['usuario']['direccion'] ?? '') ?></textarea>
                             </div>
 

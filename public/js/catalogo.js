@@ -140,7 +140,14 @@ const CatalogoModulo = {
                 10
             ) || 0;
 
-        const disponible = stock > 0;
+        const estado = Number.parseInt(
+            producto.id_estado_producto,
+            10
+        );
+
+        const disponible =
+            estado === 1 &&
+            stock > 0;
 
         const precio =
             Number.parseFloat(
@@ -361,7 +368,14 @@ const CatalogoModulo = {
                     10
                 ) || 0;
 
-            const disponible = stock > 0;
+            const estado = Number.parseInt(
+            producto.id_estado_producto,
+            10
+            );
+
+            const disponible =
+                estado === 1 &&
+                stock > 0;
 
             const precio =
                 Number.parseFloat(

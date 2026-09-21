@@ -1,6 +1,6 @@
 <?php
- // * API Endpoint: Pedidos y Checkout Transaccional
- 
+
+declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
@@ -15,36 +15,130 @@ use App\Controllers\PedidoController;
 use App\Middlewares\AuthMiddleware;
 
 header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store');
 
 $pedidoCtrl = new PedidoController();
-$action = $_GET['action'] ?? ($_POST['action'] ?? 'checkout');
+$action = (string)($_GET['action'] ?? $_POST['action'] ?? 'checkout');
 
-$input = json_decode(file_get_contents('php://input'), true) ?? [];
-$params = array_merge($_POST, $input);
+$accionesPermitidas = ['checkout', 'historial'];
 
-switch ($action) {
-    case 'checkout':
-        AuthMiddleware::verificarAutenticado();
-        $idUsuario = (int)$_SESSION['usuario']['id_usuario'];
-        $idMetodoPago = (int)($params['id_metodo_pago'] ?? 1);
-        $direccion = trim($params['direccion_envio'] ?? ($_SESSION['usuario']['direccion'] ?? ''));
-        $notas = trim($params['notas'] ?? '');
-
-        if (empty($direccion)) {
-            jsonResponse(false, "La dirección de entrega es requerida.", null, 400);
-        }
-
-        $res = $pedidoCtrl->procesarCheckout($idUsuario, $idMetodoPago, $direccion, $notas);
-        jsonResponse($res['success'], $res['message'], $res, $res['success'] ? 201 : 400);
-        break;
-
-    case 'historial':
-        AuthMiddleware::verificarAutenticado();
-        $idUsuario = (int)$_SESSION['usuario']['id_usuario'];
-        $historial = $pedidoCtrl->getHistorial($idUsuario);
-        jsonResponse(true, "Historial de pedidos recuperado.", ['total' => count($historial), 'pedidos' => $historial]);
-        break;
-
-    default:
-        jsonResponse(false, "Acción no reconocida.", null, 400);
+if (!in_array($action, $accionesPermitidas, true)) {
+    jsonResponse(false, 'Acción no reconocida.', null, 400);
 }
+
+if ($action === 'checkout') {
+    AuthMiddleware::verificarAutenticado();
+
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+        header('Allow: POST');
+        jsonResponse(false, 'Método HTTP no permitido.', null, 405);
+    }
+
+    $params = $_POST;
+    $raw = file_get_contents('php://input');
+
+    if (is_string($raw) && trim($raw) !== '') {
+        try {
+            $json = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+
+            if (is_array($json)) {
+                $params = array_merge($params, $json);
+            }
+        } catch (\JsonException) {
+            jsonResponse(false, 'La solicitud contiene JSON inválido.', null, 400);
+        }
+    }
+
+    $csrfRecibido = isset($params['csrf_token']) && is_string($params['csrf_token'])
+        ? $params['csrf_token']
+        : '';
+
+    $csrfSesion = isset($_SESSION['csrf_checkout']) && is_string($_SESSION['csrf_checkout'])
+        ? $_SESSION['csrf_checkout']
+        : '';
+
+    if (
+        $csrfRecibido === '' ||
+        $csrfSesion === '' ||
+        !hash_equals($csrfSesion, $csrfRecibido)
+    ) {
+        jsonResponse(false, 'La solicitud no pudo ser validada. Recarga la página e inténtalo nuevamente.', null, 403);
+    }
+
+    $idUsuario = filter_var(
+        $_SESSION['usuario']['id_usuario'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    $idMetodoPago = filter_var(
+        $params['id_metodo_pago'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    if ($idUsuario === false || $idMetodoPago === false) {
+        jsonResponse(false, 'Los datos del pedido no son válidos.', null, 422);
+    }
+
+    $direccion = isset($params['direccion_envio']) && is_string($params['direccion_envio'])
+        ? $params['direccion_envio']
+        : '';
+
+    $notas = isset($params['notas']) && is_string($params['notas'])
+        ? $params['notas']
+        : '';
+
+    $resultado = $pedidoCtrl->procesarCheckout(
+        (int)$idUsuario,
+        (int)$idMetodoPago,
+        $direccion,
+        $notas
+    );
+
+    if ($resultado['success']) {
+        $_SESSION['csrf_checkout'] = bin2hex(random_bytes(32));
+
+        jsonResponse(
+            true,
+            $resultado['message'],
+            $resultado,
+            201
+        );
+    }
+
+    jsonResponse(
+        false,
+        $resultado['message'],
+        null,
+        422
+    );
+}
+
+AuthMiddleware::verificarAutenticado();
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'GET') {
+    header('Allow: GET');
+    jsonResponse(false, 'Método HTTP no permitido.', null, 405);
+}
+
+$idUsuario = filter_var(
+    $_SESSION['usuario']['id_usuario'] ?? null,
+    FILTER_VALIDATE_INT,
+    ['options' => ['min_range' => 1]]
+);
+
+if ($idUsuario === false) {
+    jsonResponse(false, 'Sesión de usuario inválida.', null, 401);
+}
+
+$historial = $pedidoCtrl->getHistorial((int)$idUsuario);
+
+jsonResponse(
+    true,
+    'Historial de pedidos recuperado.',
+    [
+        'total' => count($historial),
+        'pedidos' => $historial,
+    ]
+);

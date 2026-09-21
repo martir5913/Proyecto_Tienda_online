@@ -48,11 +48,18 @@ class Producto extends Model
                 INNER JOIN marcas m ON p.id_marca = m.id_marca
                 INNER JOIN estados_producto ep ON p.id_estado_producto = ep.id_estado_producto
                 LEFT JOIN resenas r ON p.id_producto = r.id_producto
-                WHERE p.id_estado_producto = :estado_disponible';
+                WHERE p.id_estado_producto IN (:estado_disponible, :estado_agotado)';
 
         // Cada entrada: [marcador => [valor, tipo PDO]]
         $params = [
-            ':estado_disponible' => [self::ESTADO_DISPONIBLE, PDO::PARAM_INT],
+            ':estado_disponible' => [
+                self::ESTADO_DISPONIBLE,
+                PDO::PARAM_INT
+            ],
+            ':estado_agotado' => [
+                self::ESTADO_AGOTADO,
+                PDO::PARAM_INT
+            ],
         ];
 
         $categoria = $this->idPositivoONulo($filtros['categoria'] ?? null);
@@ -118,10 +125,17 @@ class Producto extends Model
                 FROM productos p
                 INNER JOIN categorias c ON p.id_categoria = c.id_categoria
                 INNER JOIN marcas m ON p.id_marca = m.id_marca
-                WHERE p.id_estado_producto = :estado_disponible';
+                WHERE p.id_estado_producto IN (:estado_disponible, :estado_agotado)';
 
         $params = [
-            ':estado_disponible' => [self::ESTADO_DISPONIBLE, PDO::PARAM_INT],
+            ':estado_disponible' => [
+                self::ESTADO_DISPONIBLE,
+                PDO::PARAM_INT
+            ],
+            ':estado_agotado' => [
+                self::ESTADO_AGOTADO,
+                PDO::PARAM_INT
+            ],
         ];
 
         $categoria = $this->idPositivoONulo($filtros['categoria'] ?? null);
@@ -166,12 +180,22 @@ class Producto extends Model
                 INNER JOIN marcas m ON p.id_marca = m.id_marca
                 INNER JOIN estados_producto ep ON p.id_estado_producto = ep.id_estado_producto
                 WHERE p.id_producto = :id
-                  AND p.id_estado_producto = :estado_disponible
+                  AND p.id_estado_producto IN (:estado_disponible, :estado_agotado)
                 LIMIT 1';
 
-        $producto = $this->ejecutar($sql, [
-            ':id'                => [$idProducto, PDO::PARAM_INT],
-            ':estado_disponible' => [self::ESTADO_DISPONIBLE, PDO::PARAM_INT],
+       $producto = $this->ejecutar($sql, [
+            ':id' => [
+                $idProducto,
+                PDO::PARAM_INT
+            ],
+            ':estado_disponible' => [
+                self::ESTADO_DISPONIBLE,
+                PDO::PARAM_INT
+            ],
+            ':estado_agotado' => [
+                self::ESTADO_AGOTADO,
+                PDO::PARAM_INT
+            ],
         ])->fetch();
 
         return $producto ?: null;

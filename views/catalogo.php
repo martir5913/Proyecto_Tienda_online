@@ -117,7 +117,12 @@ require_once __DIR__ . '/layouts/header.php';
                     <?php foreach ($productos as $p): ?>
                         <?php
                         $stock = (int)($p['stock'] ?? 0);
-                        $disponible = $stock > 0;
+                        $estado = (int)($p['id_estado_producto'] ?? 0);
+
+                        $disponible =
+                            $estado === 1 &&
+                            $stock > 0;
+                            
                         $nombreProducto = htmlspecialchars($p['nombre']);
                         $imagen = trim((string)($p['imagen'] ?? ''));
                         ?>
