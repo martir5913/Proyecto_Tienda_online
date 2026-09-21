@@ -1,6 +1,6 @@
 <?php
 // Vista: Dashboard de Administración
-$tituloPagina = "Panel Administrador | ElectroHogar";
+$tituloPagina = "Panel Administrador | Doméstik";
 $scriptEspecifico = "admin.js";
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';
@@ -97,7 +97,7 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                 <p class="text-muted small">Acceso directo a las operaciones CRUD normalizadas del sistema:</p>
                 <div class="list-group list-group-flush">
                     <a href="<?= BASE_URL ?>/index.php?ruta=admin_productos" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div><i class="bi bi-boxes me-2 text-primary"></i> Administrar productos</div>
+                        <div><i class="bi bi-boxes me-2 text-primary"></i> Administrar inventario y productos</div>
                         <i class="bi bi-chevron-right text-muted"></i>
                     </a>
                     <a href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"
@@ -106,7 +106,14 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                             <i class="bi bi-receipt me-2 text-primary"></i>
                             Control de Pedidos y Envíos
                         </div>
-
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-people-fill me-2 text-primary"></i>
+                            Gestión de Usuarios y Roles
+                        </div>
                         <i class="bi bi-chevron-right text-muted"></i>
                     </a>
                 </div>

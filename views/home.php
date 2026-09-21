@@ -1,6 +1,6 @@
 <?php
 // Vista: Página Principal (Home)
-$tituloPagina = "ElectroHogar | Los Mejores Electrodomésticos y Línea Blanca";
+$tituloPagina = "Doméstik | Los Mejores Electrodomésticos y Línea Blanca";
 $scriptEspecifico = "catalogo.js";
 
 require_once dirname(__DIR__) . '/app/controllers/ProductoController.php';
@@ -13,17 +13,20 @@ require_once __DIR__ . '/layouts/header.php';
 ?>
 
 <!-- Banner Hero Principal -->
-<section class="py-5 bg-dark text-white text-center text-lg-start position-relative overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
-    <div class="container py-4">
+<section class="hero-home-section py-5 text-white text-center text-lg-start position-relative overflow-hidden">
+    <!-- Capa de Imagen de Fondo en Espejo y Traslúcida -->
+    <div class="hero-bg-mirror" aria-hidden="true"></div>
+
+    <div class="container py-4 position-relative z-2">
         <div class="row align-items-center">
             <div class="col-lg-7">
-                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3 shadow-sm">
                     <i class="bi bi-tag-fill me-1"></i> Temporada de Innovación 2026
                 </span>
-                <h1 class="display-4 fw-bold text-white mb-3">Tecnología y Confort para tu Hogar</h1>
-                <p class="lead text-slate-300 text-light mb-4 opacity-75">Descubre nuestra línea completa de refrigeradoras, estufas, lavadoras y pequeños electrodomésticos con máxima eficiencia energética.</p>
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="<?= BASE_URL ?>/index.php?ruta=catalogo" class="btn btn-primary-app btn-lg">
+                <h1 class="display-4 fw-bold text-white mb-3 text-shadow-sm">Tecnología y Confort para tu Hogar</h1>
+                <p class="lead text-slate-200 text-light mb-4 opacity-90">Descubre nuestra línea completa de refrigeradoras, estufas, lavadoras y pequeños electrodomésticos con máxima eficiencia energética.</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                    <a href="<?= BASE_URL ?>/index.php?ruta=catalogo" class="btn btn-primary-app btn-lg shadow">
                         <i class="bi bi-grid-fill me-2"></i> Explorar Catálogo
                     </a>
                     <a href="<?= BASE_URL ?>/index.php?ruta=catalogo&categoria=1" class="btn btn-outline-light btn-lg">
@@ -32,10 +35,10 @@ require_once __DIR__ . '/layouts/header.php';
                 </div>
             </div>
             <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                <div class="p-4 rounded-4 bg-white bg-opacity-10 border border-light border-opacity-25 shadow-lg">
+                <div class="p-4 rounded-4 hero-home-card-glass">
                     <i class="bi bi-shield-check display-3 text-warning mb-2"></i>
                     <h4 class="text-white fw-bold">Garantía Certificada</h4>
-                    <p class="text-light small opacity-75 mb-0">Hasta 10 años de garantía en compresores y motores Inverter Direct Drive de primeras marcas.</p>
+                    <p class="text-light small opacity-90 mb-0">Hasta 10 años de garantía en compresores y motores Inverter Direct Drive de primeras marcas.</p>
                 </div>
             </div>
         </div>
@@ -97,8 +100,16 @@ require_once __DIR__ . '/layouts/header.php';
             
             <?php foreach ($destacados as $prod): ?>
                 <div class="col-sm-6 col-lg-3">
-                    <div class="product-card">
-                      <div class="product-img-wrapper">
+                    <div class="product-card position-relative">
+                        <!-- Botón flotante rápido para Wishlist -->
+                        <button type="button"
+                                class="btn-wishlist-card"
+                                title="Guardar en lista de deseos"
+                                onclick="ElectroApp.toggleWishlist(<?= (int)$prod['id_producto'] ?>, this)">
+                            <i class="bi bi-heart"></i>
+                        </button>
+
+                        <div class="product-img-wrapper">
                             <?php if (!empty($prod['imagen'])): ?>
 
                                 <img

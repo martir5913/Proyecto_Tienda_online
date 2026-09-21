@@ -1,6 +1,6 @@
 <?php
 // Vista: Carrito de Compras y Checkout Transaccional
-$tituloPagina = "Carrito de Compras | ElectroHogar";
+$tituloPagina = "Carrito de Compras | Doméstik";
 $scriptEspecifico = "carrito.js";
 
 require_once dirname(__DIR__) . '/app/controllers/CarritoController.php';

@@ -1,6 +1,6 @@
 <?php
 // RF16 - Administrar productos
-$tituloPagina = 'Administrar Productos | ElectroHogar';
+$tituloPagina = 'Administrar Productos | Doméstik';
 $scriptEspecifico = 'admin_productos.js';
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';

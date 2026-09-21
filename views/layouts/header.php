@@ -13,7 +13,10 @@ $totalCarrito = $carritoCtrl->contarItems();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $tituloPagina ?? 'ElectroHogar | Tienda en Línea de Electrodomésticos' ?></title>
+    <title><?= $tituloPagina ?? 'Doméstik | Tienda en Línea de Electrodomésticos' ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/public/favicon.ico">
+
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -36,7 +39,7 @@ $totalCarrito = $carritoCtrl->contarItems();
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="<?= BASE_URL ?>/index.php">
                 <i class="bi bi-lightning-charge-fill text-warning me-2 fs-4"></i>
-                <span>ElectroHogar</span>
+                <span>Doméstik</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -88,10 +91,15 @@ $totalCarrito = $carritoCtrl->contarItems();
                                 <span><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=perfil"><i class="bi bi-person-gear me-2"></i>Mi Perfil</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=mis_pedidos"><i class="bi bi-bag-check me-2"></i>Mis Pedidos</a></li>
                                 <?php if (esAdmin()): ?>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-primary" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Panel Administrador</a></li>
+                                    <li><h6 class="dropdown-header text-primary fw-bold">Administración</h6></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_productos"><i class="bi bi-boxes me-2"></i>Inventario y Productos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"><i class="bi bi-receipt me-2"></i>Pedidos y Envíos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"><i class="bi bi-people me-2"></i>Gestión de Usuarios</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>/index.php?ruta=logout"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
