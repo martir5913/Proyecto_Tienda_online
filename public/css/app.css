@@ -244,3 +244,18 @@ h6,
     right: 1.5rem;
     z-index: 1080;
 }
+
+/* Control de Cantidad sin Spinners Nativos */
+.input-cantidad::-webkit-inner-spin-button,
+.input-cantidad::-webkit-outer-spin-button,
+.input-group-cantidad input[type="number"]::-webkit-inner-spin-button,
+.input-group-cantidad input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-cantidad,
+.input-group-cantidad input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
