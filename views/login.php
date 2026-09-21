@@ -8,6 +8,7 @@ require_once dirname(__DIR__) . '/app/controllers/AuthController.php';
 use App\Controllers\AuthController;
 
 $error = null;
+$exitoRegistro = !empty($_GET['registrado']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auth = new AuthController();
@@ -32,6 +33,13 @@ require_once __DIR__ . '/layouts/header.php';
                     <h3 class="fw-bold mt-2">Iniciar Sesión</h3>
                     <p class="text-muted small">Accede a tus compras, favoritos y pedidos</p>
                 </div>
+
+                <?php if ($exitoRegistro): ?>
+                    <div class="alert alert-success small d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle-fill fs-5 me-2"></i>
+                        <span><strong>¡Cuenta creada con éxito!</strong> Ya puedes iniciar sesión.</span>
+                    </div>
+                <?php endif; ?>
 
                 <?php if ($error): ?>
                     <div class="alert alert-danger small d-flex align-items-center mb-3">

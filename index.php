@@ -32,6 +32,10 @@ switch ($ruta) {
         require_once __DIR__ . '/views/mis_pedidos.php';
         break;
 
+    case 'perfil':
+        require_once __DIR__ . '/views/perfil.php';
+        break;
+
     case 'wishlist':
         require_once __DIR__ . '/views/wishlist.php';
         break;
@@ -46,6 +50,10 @@ switch ($ruta) {
 
     case 'admin_pedidos':
         require_once __DIR__ . '/views/admin/pedidos.php';
+        break;
+
+    case 'admin_usuarios':
+        require_once __DIR__ . '/views/admin/usuarios.php';
         break;
 
     case 'logout':

@@ -88,10 +88,15 @@ $totalCarrito = $carritoCtrl->contarItems();
                                 <span><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=perfil"><i class="bi bi-person-gear me-2"></i>Mi Perfil</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=mis_pedidos"><i class="bi bi-bag-check me-2"></i>Mis Pedidos</a></li>
                                 <?php if (esAdmin()): ?>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-primary" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Panel Administrador</a></li>
+                                    <li><h6 class="dropdown-header text-primary fw-bold">Administración</h6></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_productos"><i class="bi bi-boxes me-2"></i>Inventario y Productos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"><i class="bi bi-receipt me-2"></i>Pedidos y Envíos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"><i class="bi bi-people me-2"></i>Gestión de Usuarios</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>/index.php?ruta=logout"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
