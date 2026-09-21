@@ -40,6 +40,10 @@ switch ($ruta) {
         require_once __DIR__ . '/views/admin/dashboard.php';
         break;
 
+    case 'admin_productos':
+        require_once __DIR__ . '/views/admin/productos.php';
+        break;
+
     case 'logout':
         require_once __DIR__ . '/app/controllers/AuthController.php';
         $auth = new \App\Controllers\AuthController();

@@ -302,7 +302,7 @@ Código utilizado:
     </div>
 
 </div>
-
+```
 
 ## Resultado final
 
@@ -321,3 +321,29 @@ La funcionalidad RF04 permite actualmente:
 - Agregar productos al carrito desde la tarjeta o desde el modal.
 - Evitar problemas de caché con `catalogo.js`.
 - Reutilizar catalogo.js
+
+## RF16 – Administrar productos
+
+Este módulo implementa el CRUD administrativo de productos sin cambiar la paleta de colores ni el diseño global. Reutiliza Bootstrap y las clases existentes del proyecto.
+
+Funciones incluidas
+
+Listar todos los productos, incluidos agotados y descontinuados.
+Buscar por nombre, modelo o marca.
+Filtrar por categoría y estado.
+Registrar productos.
+Editar productos.
+Actualizar precio y stock.
+Cambiar categoría, marca y estado.
+Editar descripción y especificaciones.
+Marcar o quitar productos destacados.
+Subir o reemplazar imágenes JPG, PNG o WEBP de hasta 5 MB.
+Eliminar lógicamente un producto marcándolo como Descontinuado.
+Protección para que únicamente Administradores accedan al módulo.
+Protección CSRF en operaciones administrativas.
+Consultas preparadas mediante PDO.
+los estados ya definidos son:
+
+Disponible
+Agotado
+Descontinuado
