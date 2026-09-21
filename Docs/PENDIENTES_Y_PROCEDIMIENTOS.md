@@ -154,3 +154,7 @@ Rama: feature/desarrollador-1             Rama: feature/desarrollador-2
                             ▼
              Merge a Main (Entrega 25 Sep)
 ```
+
+## actualizacion css de imagenes
+--bordes
+--tamaño
