@@ -97,8 +97,16 @@ require_once __DIR__ . '/layouts/header.php';
             
             <?php foreach ($destacados as $prod): ?>
                 <div class="col-sm-6 col-lg-3">
-                    <div class="product-card">
-                      <div class="product-img-wrapper">
+                    <div class="product-card position-relative">
+                        <!-- Botón flotante rápido para Wishlist -->
+                        <button type="button"
+                                class="btn-wishlist-card"
+                                title="Guardar en lista de deseos"
+                                onclick="ElectroApp.toggleWishlist(<?= (int)$prod['id_producto'] ?>, this)">
+                            <i class="bi bi-heart"></i>
+                        </button>
+
+                        <div class="product-img-wrapper">
                             <?php if (!empty($prod['imagen'])): ?>
 
                                 <img

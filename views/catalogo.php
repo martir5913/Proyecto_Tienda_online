@@ -127,7 +127,15 @@ require_once __DIR__ . '/layouts/header.php';
                         $imagen = trim((string)($p['imagen'] ?? ''));
                         ?>
                         <div class="col-md-6 col-lg-4 mb-3">
-                            <div class="product-card">
+                            <div class="product-card position-relative">
+                                <!-- Botón flotante rápido para Wishlist -->
+                                <button type="button"
+                                        class="btn-wishlist-card"
+                                        title="Guardar en lista de deseos"
+                                        onclick="ElectroApp.toggleWishlist(<?= (int)$p['id_producto'] ?>, this)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+
                                 <div class="product-img-wrapper">
                                     <?php if ($imagen !== ''): ?>
                                         <img src="<?= BASE_URL ?>/public/img/productos/<?= rawurlencode($imagen) ?>"
