@@ -332,6 +332,20 @@ const AdminUsuariosModulo = {
         if (selectRol && selectRol.disabled) data.id_rol = selectRol.value;
         if (selectEstado && selectEstado.disabled) data.id_estado_usuario = selectEstado.value;
 
+        // Validar longitud mínima de contraseña si fue ingresada
+        if (data.password && data.password.trim() !== '') {
+            if (data.password.trim().length < 6) {
+                if (typeof ElectroApp !== 'undefined') {
+                    ElectroApp.mostrarToast('La nueva contraseña debe tener al menos 6 caracteres.', 'warning');
+                }
+                const passInput = document.getElementById('edit-password');
+                if (passInput) passInput.focus();
+                return;
+            }
+        } else {
+            delete data.password;
+        }
+
         if (btnSubmit) {
             btnSubmit.disabled = true;
             btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Guardando...';

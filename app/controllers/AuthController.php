@@ -26,6 +26,18 @@ class AuthController
             return ['success' => false, 'message' => 'Credenciales inválidas. Verifique correo y contraseña.'];
         }
 
+        // Validar si la cuenta está inactiva o bloqueada
+        $idEstado = (int)($usuario['id_estado_usuario'] ?? 1);
+        if ($idEstado !== 1) {
+            if ($idEstado === 2) {
+                return ['success' => false, 'message' => 'Tu cuenta se encuentra inactiva. Por favor, comunícate con soporte.'];
+            }
+            if ($idEstado === 3) {
+                return ['success' => false, 'message' => 'Tu cuenta ha sido bloqueada por seguridad. Contacta al administrador.'];
+            }
+            return ['success' => false, 'message' => 'Tu cuenta se encuentra deshabilitada. Contacta al soporte técnico.'];
+        }
+
         // Guardar datos seguros en sesión
         $_SESSION['usuario'] = [
             'id_usuario'  => $usuario['id_usuario'],

@@ -14,9 +14,10 @@ class Usuario extends Model
     public function buscarPorCorreo(string $correo): ?array
     {
         $stmt = $this->db->prepare(
-            "SELECT u.*, r.nombre_rol 
+            "SELECT u.*, r.nombre_rol, eu.nombre_estado as estado 
              FROM usuarios u 
              INNER JOIN roles r ON u.id_rol = r.id_rol 
+             INNER JOIN estados_usuario eu ON u.id_estado_usuario = eu.id_estado_usuario 
              WHERE u.correo = :correo LIMIT 1"
         );
         $stmt->execute([':correo' => $correo]);
@@ -74,8 +75,12 @@ class Usuario extends Model
         $params = [];
 
         if (!empty($filtros['q'])) {
-            $sql .= " AND (u.nombre LIKE :q OR u.apellido LIKE :q OR u.correo LIKE :q OR u.telefono LIKE :q)";
-            $params[':q'] = '%' . trim($filtros['q']) . '%';
+            $sql .= " AND (u.nombre LIKE :q1 OR u.apellido LIKE :q2 OR u.correo LIKE :q3 OR u.telefono LIKE :q4)";
+            $qVal = '%' . trim((string)$filtros['q']) . '%';
+            $params[':q1'] = $qVal;
+            $params[':q2'] = $qVal;
+            $params[':q3'] = $qVal;
+            $params[':q4'] = $qVal;
         }
 
         if (!empty($filtros['id_rol'])) {

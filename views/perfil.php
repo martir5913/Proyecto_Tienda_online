@@ -22,33 +22,52 @@ $idUsuario = (int)$_SESSION['usuario']['id_usuario'];
 $usuarioModel = new Usuario();
 $authCtrl = new AuthController();
 
+// Protección CSRF
+if (empty($_SESSION['csrf_perfil'])) {
+    $_SESSION['csrf_perfil'] = bin2hex(random_bytes(32));
+}
+$csrfToken = (string)$_SESSION['csrf_perfil'];
+
 $mensajePerfil = null;
 $tipoPerfil = null;
 $mensajePass = null;
 $tipoPass = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $accion = $_POST['accion'] ?? '';
+    $tokenRecibido = (string)($_POST['csrf_token'] ?? '');
+    
+    if (empty($tokenRecibido) || !hash_equals((string)($_SESSION['csrf_perfil'] ?? ''), $tokenRecibido)) {
+        $mensajePerfil = 'Token de seguridad inválido o expirado. Por favor, recarga la página.';
+        $tipoPerfil = 'danger';
+        $mensajePass = 'Token de seguridad inválido o expirado. Por favor, recarga la página.';
+        $tipoPass = 'danger';
+    } else {
+        $accion = $_POST['accion'] ?? '';
 
-    if ($accion === 'guardar_perfil') {
-        $res = $authCtrl->actualizarPerfil($idUsuario, $_POST);
-        $mensajePerfil = $res['message'];
-        $tipoPerfil = $res['success'] ? 'success' : 'danger';
-    }
+        if ($accion === 'guardar_perfil') {
+            $res = $authCtrl->actualizarPerfil($idUsuario, $_POST);
+            $mensajePerfil = $res['message'];
+            $tipoPerfil = $res['success'] ? 'success' : 'danger';
+        }
 
-    if ($accion === 'cambiar_password') {
-        $actual = (string)($_POST['password_actual'] ?? '');
-        $nueva = (string)($_POST['password_nueva'] ?? '');
-        $confirm = (string)($_POST['password_confirm'] ?? '');
+        if ($accion === 'cambiar_password') {
+            $actual = (string)($_POST['password_actual'] ?? '');
+            $nueva = (string)($_POST['password_nueva'] ?? '');
+            $confirm = (string)($_POST['password_confirm'] ?? '');
 
-        $res = $authCtrl->cambiarPassword($idUsuario, $actual, $nueva, $confirm);
-        $mensajePass = $res['message'];
-        $tipoPass = $res['success'] ? 'success' : 'danger';
+            $res = $authCtrl->cambiarPassword($idUsuario, $actual, $nueva, $confirm);
+            $mensajePass = $res['message'];
+            $tipoPass = $res['success'] ? 'success' : 'danger';
+        }
     }
 }
 
 $usuario = $usuarioModel->obtenerPorId($idUsuario) ?? [];
-$iniciales = strtoupper(substr($usuario['nombre'] ?? 'U', 0, 1) . substr($usuario['apellido'] ?? '', 0, 1));
+$nombreUsuario = trim((string)($usuario['nombre'] ?? 'U'));
+$apellidoUsuario = trim((string)($usuario['apellido'] ?? ''));
+$ini1 = mb_substr($nombreUsuario, 0, 1, 'UTF-8');
+$ini2 = mb_substr($apellidoUsuario, 0, 1, 'UTF-8');
+$iniciales = mb_strtoupper($ini1 . $ini2, 'UTF-8');
 
 require_once __DIR__ . '/layouts/header.php';
 ?>
@@ -76,7 +95,7 @@ require_once __DIR__ . '/layouts/header.php';
             <div class="card border-0 shadow-sm rounded-4 text-center p-4 mb-4">
                 <div class="d-flex justify-content-center mb-3">
                     <div class="rounded-circle bg-primary text-white display-6 fw-bold d-flex align-items-center justify-content-center shadow-sm" style="width: 80px; height: 80px;">
-                        <?= $iniciales ?>
+                        <?= htmlspecialchars($iniciales, ENT_QUOTES, 'UTF-8') ?>
                     </div>
                 </div>
                 <h5 class="fw-bold mb-1"><?= htmlspecialchars(($usuario['nombre'] ?? '') . ' ' . ($usuario['apellido'] ?? '')) ?></h5>
@@ -145,6 +164,7 @@ require_once __DIR__ . '/layouts/header.php';
                 <?php endif; ?>
 
                 <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="accion" value="guardar_perfil">
 
                     <div class="row g-3 mb-3">
@@ -196,6 +216,7 @@ require_once __DIR__ . '/layouts/header.php';
                 <?php endif; ?>
 
                 <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="accion" value="cambiar_password">
 
                     <div class="mb-3">

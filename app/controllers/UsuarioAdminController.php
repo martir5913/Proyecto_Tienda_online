@@ -79,6 +79,17 @@ class UsuarioAdminController
             return ['success' => false, 'message' => 'El nombre y apellido son obligatorios.'];
         }
 
+        // Validar longitud de la contraseña en caso de restablecimiento
+        if (isset($datos['password']) && trim((string)$datos['password']) !== '') {
+            $passLimpia = trim((string)$datos['password']);
+            if (strlen($passLimpia) < 6) {
+                return ['success' => false, 'message' => 'La nueva contraseña debe contener al menos 6 caracteres.'];
+            }
+            $datos['password'] = $passLimpia;
+        } else {
+            unset($datos['password']);
+        }
+
         $exito = $this->usuarioModel->actualizarUsuarioAdmin($id, $datos);
 
         if ($exito) {
