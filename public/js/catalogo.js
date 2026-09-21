@@ -65,6 +65,9 @@ const CatalogoModulo = {
                 this.inputBusqueda.value.trim()
             );
         }
+        else {
+        params.delete('q');
+        }
 
         try {
             const resp = await fetch(
@@ -77,6 +80,9 @@ const CatalogoModulo = {
             );
 
             const res = await resp.json();
+
+            console.log('Filtros enviados:', params.toString());
+            console.log('Respuesta filtros:', res);
 
             if (res.success) {
                 const productos = Array.isArray(res.data?.productos)

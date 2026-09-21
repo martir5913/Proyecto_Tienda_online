@@ -50,8 +50,16 @@ require_once __DIR__ . '/layouts/header.php';
                     <!-- Búsqueda rápida -->
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Búsqueda rápida</label>
-                        <input type="text" id="input-busqueda-catalogo" name="q" class="form-control form-control-sm"
-                               value="<?= htmlspecialchars($filtros['busqueda']) ?>" placeholder="Nombre o modelo...">
+                        <input
+                            type="search"
+                            id="input-busqueda-catalogo"
+                            name="q"
+                            class="form-control form-control-sm"
+                            value="<?= htmlspecialchars($filtros['busqueda'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            placeholder="Nombre, modelo o marca..."
+                            maxlength="100"
+                            autocomplete="off"
+                        >    
                     </div>
 
                     <!-- Categorías -->
