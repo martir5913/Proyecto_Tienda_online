@@ -13,7 +13,10 @@ $totalCarrito = $carritoCtrl->contarItems();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $tituloPagina ?? 'ElectroHogar | Tienda en Línea de Electrodomésticos' ?></title>
+    <title><?= $tituloPagina ?? 'Doméstik | Tienda en Línea de Electrodomésticos' ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/public/favicon.ico">
+
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -36,7 +39,7 @@ $totalCarrito = $carritoCtrl->contarItems();
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="<?= BASE_URL ?>/index.php">
                 <i class="bi bi-lightning-charge-fill text-warning me-2 fs-4"></i>
-                <span>ElectroHogar</span>
+                <span>Doméstik</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">

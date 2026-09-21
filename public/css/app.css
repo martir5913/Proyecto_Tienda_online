@@ -1,4 +1,4 @@
-/* ESTILOS ELECTROHOGAR - TIENDA EN LINEA
+/* ESTILOS DOMÉSTIK - TIENDA EN LINEA
    Paleta: Slate Dark Navy (#0f172a), Indigo (#4338ca), Slate Light (#f8fafc)
    Tipografía: Outfit (Títulos) y Plus Jakarta Sans (Cuerpo)
    Regla: Cero emojis. Iconografía 100% Bootstrap Icons. */
@@ -300,3 +300,43 @@ h6,
 .btn-wishlist-card:hover i {
     transform: scale(1.1);
 }
+
+/* ==========================================================================
+   Hero Banner con Fondo Espejo y Traslúcido (Tecnología y Confort)
+   ========================================================================== */
+.hero-home-section {
+    position: relative;
+    background: linear-gradient(135deg, #0b1120 0%, #1e1b4b 100%);
+    overflow: hidden;
+}
+
+.hero-home-section .hero-bg-mirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/fondo_linea_blanca.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scaleX(-1); /* Orientación en modo espejo */
+    opacity: 0.28; /* Efecto traslúcido para destacar el texto con alto contraste */
+    filter: saturate(1.15) contrast(1.05);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-home-section .z-2 {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-home-card-glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+

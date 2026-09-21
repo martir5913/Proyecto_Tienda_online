@@ -1,6 +1,6 @@
 <?php
 // Vista: Catálogo con Barra Lateral de Filtros Asíncronos
-$tituloPagina = "Catálogo de Electrodomésticos y Línea Blanca | ElectroHogar";
+$tituloPagina = "Catálogo de Electrodomésticos y Línea Blanca | Doméstik";
 $scriptEspecifico = "catalogo.js";
 
 require_once dirname(__DIR__) . '/app/controllers/ProductoController.php';

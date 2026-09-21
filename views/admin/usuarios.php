@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$tituloPagina = 'Gestión de Usuarios y Roles | ElectroHogar';
+$tituloPagina = 'Gestión de Usuarios y Roles | Doméstik';
 $scriptEspecifico = 'admin_usuarios.js';
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';

@@ -1,6 +1,6 @@
 <?php
 // Vista: Lista de Deseos (Wishlist)
-$tituloPagina = "Lista de Deseos | ElectroHogar";
+$tituloPagina = "Lista de Deseos | Doméstik";
 
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';
 require_once dirname(__DIR__) . '/app/controllers/WishlistController.php';

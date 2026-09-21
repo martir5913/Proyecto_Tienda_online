@@ -1,4 +1,4 @@
-// JavaScript Global de la Aplicación: ElectroHogar
+// JavaScript Global de la Aplicación: Doméstik
 // Notificaciones Toast, utilidades de carrito y eventos compartidos
 
 const ElectroApp = {

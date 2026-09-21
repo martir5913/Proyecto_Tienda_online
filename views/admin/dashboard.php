@@ -1,6 +1,6 @@
 <?php
 // Vista: Dashboard de Administración
-$tituloPagina = "Panel Administrador | ElectroHogar";
+$tituloPagina = "Panel Administrador | Doméstik";
 $scriptEspecifico = "admin.js";
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';

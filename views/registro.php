@@ -1,6 +1,6 @@
 <?php
 // Vista: Registro de Nuevo Usuario Cliente
-$tituloPagina = "Crear Cuenta | ElectroHogar";
+$tituloPagina = "Crear Cuenta | Doméstik";
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/app/controllers/AuthController.php';

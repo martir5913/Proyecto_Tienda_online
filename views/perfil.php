@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$tituloPagina = "Mi Perfil | ElectroHogar";
+$tituloPagina = "Mi Perfil | Doméstik";
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
