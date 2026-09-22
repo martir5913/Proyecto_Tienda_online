@@ -116,7 +116,15 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                         </div>
                         <i class="bi bi-chevron-right text-muted"></i>
                     </a>
-                </div>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_apis"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-braces-asterisk me-2 text-primary"></i>
+                            Pruebas de API
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                 </div>
             </div>
         </div>
 

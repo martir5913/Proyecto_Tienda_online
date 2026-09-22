@@ -31,6 +31,27 @@ $totalCarrito = $carritoCtrl->contarItems();
         rel="stylesheet"
         href="<?= BASE_URL ?>/public/css/app.css?v=<?= $versionCss ?>"
     >
+    <?php if (isset($cssEspecifico)): ?>
+        <?php
+        $rutaCssEspecifico =
+            PUBLIC_DIR . '/css/' . $cssEspecifico;
+
+        $versionCssEspecifico =
+            file_exists($rutaCssEspecifico)
+                ? filemtime($rutaCssEspecifico)
+                : time();
+        ?>
+
+        <link
+            rel="stylesheet"
+            href="<?= BASE_URL ?>/public/css/<?= htmlspecialchars(
+                $cssEspecifico,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>?v=<?= $versionCssEspecifico ?>"
+        >
+    <?php endif; ?>
+    
 </head>
 <body>
 
