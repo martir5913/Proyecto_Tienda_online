@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$tituloPagina = 'Control de Pedidos y Envíos | ElectroHogar';
+$tituloPagina = 'Control de Pedidos y Envíos | Doméstik';
 $scriptEspecifico = 'admin_pedidos.js';
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';

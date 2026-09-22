@@ -28,9 +28,9 @@ if ($id) {
     $filtros = [
         'categoria'  => $_GET['categoria'] ?? null,
         'marca'      => $_GET['marca'] ?? null,
-        'busqueda'   => $_GET['q'] ?? null,
-        'precio_min' => $_GET['min'] ?? null,
-        'precio_max' => $_GET['max'] ?? null
+        'busqueda'   => $_GET['q'] ?? ($_GET['busqueda'] ?? null),
+        'precio_min' => $_GET['min'] ?? ($_GET['precio_min'] ?? null),
+        'precio_max' => $_GET['max'] ?? ($_GET['precio_max'] ?? null)
     ];
     $productos = $productoCtrl->getCatalogo($filtros);
     jsonResponse(true, "Catálogo de productos obtenido exitosamente.", [

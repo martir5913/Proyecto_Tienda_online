@@ -36,7 +36,7 @@ switch ($action) {
     case 'remove':
         $id = (int)($params['id_producto'] ?? 0);
         $res = $carritoCtrl->eliminar($id);
-        jsonResponse($res['success'], $res['message'], $res, 200);
+        jsonResponse($res['success'], $res['message'], $res['resumen'] ?? null, 200);
         break;
 
     case 'clear':

@@ -25,7 +25,7 @@ Este documento define la arquitectura visual, distribución de espacios y jerarq
 
 ```
 +-------------------------------------------------------------------------------+
-| [Logo: ElectroHogar]   [Buscar electrodomésticos...] (Q)  [Wishlist (2)] [Cart (1)] [Login] |
+| [Logo: Doméstik]   [Buscar electrodomésticos...] (Q)  [Wishlist (2)] [Cart (1)] [Login] |
 | Nav: Inicio | Refrigeración | Lavado | Cocina | Climatización | Pequeños | Ofertas      |
 +-------------------------------------------------------------------------------+
 | HERO BANNER CAROUSEL                                                          |

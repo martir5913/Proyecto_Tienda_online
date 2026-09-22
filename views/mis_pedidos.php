@@ -1,6 +1,6 @@
 <?php
 // Vista: Historial de Compras del Cliente (Mis Pedidos)
-$tituloPagina = "Mis Pedidos | ElectroHogar";
+$tituloPagina = "Mis Pedidos | Doméstik";
 
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';
 require_once dirname(__DIR__) . '/app/controllers/PedidoController.php';

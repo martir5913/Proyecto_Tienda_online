@@ -206,8 +206,14 @@ const CatalogoModulo = {
 
         return `
             <div class="col-md-6 col-lg-4 mb-3">
-
-                <div class="product-card">
+                <div class="product-card position-relative">
+                    <!-- Botón flotante rápido para Wishlist -->
+                    <button type="button"
+                            class="btn-wishlist-card"
+                            title="Guardar en lista de deseos"
+                            onclick="ElectroApp.toggleWishlist(${id}, this)">
+                        <i class="bi bi-heart"></i>
+                    </button>
 
                     <div class="product-img-wrapper">
                         ${imagenHtml}
@@ -486,33 +492,40 @@ const CatalogoModulo = {
 
                         </div>
 
-                        <button
-                            type="button"
-                            class="btn btn-primary-app"
-                            onclick="
-                                ElectroApp.agregarAlCarrito(
-                                    ${
-                                        Number.parseInt(
-                                            producto.id_producto,
-                                            10
-                                        ) || 0
-                                    }
-                                )
-                            "
-                            ${
-                                disponible
-                                    ? ''
-                                    : 'disabled'
-                            }
-                        >
+                        <div class="d-flex gap-2">
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger"
+                                title="Guardar en Lista de Deseos"
+                                onclick="ElectroApp.toggleWishlist(${Number.parseInt(producto.id_producto, 10) || 0}, this)"
+                            >
+                                <i class="bi bi-heart me-1"></i> Favoritos
+                            </button>
 
-                            <i class="bi bi-cart-plus me-1"></i>
-                            Añadir al carrito
-
-                        </button>
-
+                            <button
+                                type="button"
+                                class="btn btn-primary-app flex-grow-1"
+                                onclick="
+                                    ElectroApp.agregarAlCarrito(
+                                        ${
+                                            Number.parseInt(
+                                                producto.id_producto,
+                                                10
+                                            ) || 0
+                                        }
+                                    )
+                                "
+                                ${
+                                    disponible
+                                        ? ''
+                                        : 'disabled'
+                                }
+                            >
+                                <i class="bi bi-cart-plus me-1"></i>
+                                Añadir al carrito
+                            </button>
+                        </div>
                     </div>
-
                 </div>
             `;
 

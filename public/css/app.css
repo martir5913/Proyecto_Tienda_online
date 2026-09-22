@@ -1,4 +1,4 @@
-/* ESTILOS ELECTROHOGAR - TIENDA EN LINEA
+/* ESTILOS DOMÉSTIK - TIENDA EN LINEA
    Paleta: Slate Dark Navy (#0f172a), Indigo (#4338ca), Slate Light (#f8fafc)
    Tipografía: Outfit (Títulos) y Plus Jakarta Sans (Cuerpo)
    Regla: Cero emojis. Iconografía 100% Bootstrap Icons. */
@@ -244,3 +244,99 @@ h6,
     right: 1.5rem;
     z-index: 1080;
 }
+
+/* Control de Cantidad sin Spinners Nativos */
+.input-cantidad::-webkit-inner-spin-button,
+.input-cantidad::-webkit-outer-spin-button,
+.input-group-cantidad input[type="number"]::-webkit-inner-spin-button,
+.input-group-cantidad input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-cantidad,
+.input-group-cantidad input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Botón flotante rápido para Lista de Deseos (Favoritos) */
+.btn-wishlist-card {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #dc2626;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-wishlist-card:hover {
+    transform: scale(1.15);
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(220, 38, 38, 0.18);
+    color: #b91c1c;
+}
+
+.btn-wishlist-card:active {
+    transform: scale(0.92);
+}
+
+.btn-wishlist-card i {
+    transition: transform 0.2s ease;
+}
+
+.btn-wishlist-card:hover i {
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   Hero Banner con Fondo Espejo y Traslúcido (Tecnología y Confort)
+   ========================================================================== */
+.hero-home-section {
+    position: relative;
+    background: linear-gradient(135deg, #0b1120 0%, #1e1b4b 100%);
+    overflow: hidden;
+}
+
+.hero-home-section .hero-bg-mirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/fondo_linea_blanca.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scaleX(-1); /* Orientación en modo espejo */
+    opacity: 0.28; /* Efecto traslúcido para destacar el texto con alto contraste */
+    filter: saturate(1.15) contrast(1.05);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-home-section .z-2 {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-home-card-glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+

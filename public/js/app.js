@@ -1,4 +1,4 @@
-// JavaScript Global de la Aplicación: ElectroHogar
+// JavaScript Global de la Aplicación: Doméstik
 // Notificaciones Toast, utilidades de carrito y eventos compartidos
 
 const ElectroApp = {
@@ -62,6 +62,88 @@ const ElectroApp = {
             }
         } catch (err) {
             this.mostrarToast('Error al conectar con el servidor', 'danger');
+        }
+    },
+
+    // Agregar producto a la Lista de Deseos
+    async agregarAWishlist(idProducto, boton = null) {
+        try {
+            const resp = await fetch('api/wishlist.php?action=add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_producto: idProducto })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                this.mostrarToast(data.message, 'success');
+                if (boton) {
+                    boton.classList.add('text-danger');
+                    const icon = boton.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
+                    }
+                }
+            } else {
+                this.mostrarToast(data.message, 'danger');
+            }
+        } catch (err) {
+            this.mostrarToast('Error al procesar la lista de deseos.', 'danger');
+        }
+    },
+
+    // Eliminar producto de la Lista de Deseos con animación
+    async eliminarDeWishlist(idProducto, elementoCardId = null) {
+        try {
+            const resp = await fetch('api/wishlist.php?action=remove', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_producto: idProducto })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                this.mostrarToast(data.message, 'success');
+
+                if (elementoCardId) {
+                    const el = document.getElementById(elementoCardId);
+                    if (el) {
+                        el.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                        el.style.opacity = '0';
+                        el.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            el.remove();
+                            // Si ya no quedan productos en la vista de favoritos
+                            const contenedor = document.getElementById('grid-favoritos');
+                            if (contenedor && contenedor.querySelectorAll('.col-favorito').length === 0) {
+                                const vacioEl = document.getElementById('wishlist-vacia');
+                                if (vacioEl) vacioEl.classList.remove('d-none');
+                            }
+                        }, 250);
+                    }
+                }
+            } else {
+                this.mostrarToast(data.message, 'danger');
+            }
+        } catch (err) {
+            this.mostrarToast('Error al conectar con el servidor', 'danger');
+        }
+    },
+
+    // Alternar (toggle) producto en Wishlist
+    async toggleWishlist(idProducto, boton = null) {
+        const estaActivo = boton && boton.querySelector('.bi-heart-fill');
+        if (estaActivo) {
+            await this.eliminarDeWishlist(idProducto);
+            if (boton) {
+                boton.classList.remove('text-danger');
+                const icon = boton.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('bi-heart-fill');
+                    icon.classList.add('bi-heart');
+                }
+            }
+        } else {
+            await this.agregarAWishlist(idProducto, boton);
         }
     }
 };

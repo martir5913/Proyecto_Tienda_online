@@ -1,6 +1,6 @@
 <?php
 // Vista: Carrito de Compras y Checkout Transaccional
-$tituloPagina = "Carrito de Compras | ElectroHogar";
+$tituloPagina = "Carrito de Compras | Doméstik";
 $scriptEspecifico = "carrito.js";
 
 require_once dirname(__DIR__) . '/app/controllers/CarritoController.php';
@@ -29,11 +29,11 @@ $metodosPago = $stmtMetodosPago->fetchAll(PDO::FETCH_ASSOC);
 require_once __DIR__ . '/layouts/header.php';
 ?>
 
-<div class="container py-4">
+<div class="container py-4" id="contenedor-carrito">
     <h3 class="fw-bold mb-4"><i class="bi bi-cart3 me-2"></i>Carrito de Compras</h3>
 
     <?php if (empty($resumen['items'])): ?>
-        <div class="text-center py-5 bg-white rounded-3 shadow-sm">
+        <div class="text-center py-5 bg-white rounded-3 shadow-sm" id="carrito-vacio">
             <i class="bi bi-cart-x fs-1 text-muted"></i>
             <h5 class="mt-3 text-muted">Tu carrito está vacío</h5>
             <p class="text-muted small">Explora nuestro catálogo para encontrar electrodomésticos para tu hogar.</p>
@@ -42,7 +42,7 @@ require_once __DIR__ . '/layouts/header.php';
             </a>
         </div>
     <?php else: ?>
-        <div class="row g-4">
+        <div class="row g-4" id="carrito-contenido">
             <!-- Tabla de Artículos -->
             <div class="col-lg-8">
                 <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
@@ -52,14 +52,14 @@ require_once __DIR__ . '/layouts/header.php';
                                 <tr>
                                     <th>Producto</th>
                                     <th>Precio</th>
-                                    <th style="width: 130px;">Cantidad</th>
+                                    <th style="width: 150px;" class="text-center">Cantidad</th>
                                     <th>Subtotal</th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="lista-items-carrito">
                                 <?php foreach ($resumen['items'] as $item): ?>
-                                    <tr>
+                                    <tr id="fila-item-<?= $item['id_producto'] ?>" class="item-carrito-row">
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <i class="bi bi-box-seam fs-3 text-muted me-3"></i>
@@ -71,11 +71,24 @@ require_once __DIR__ . '/layouts/header.php';
                                         </td>
                                         <td class="fw-semibold">Q <?= number_format($item['precio'], 2) ?></td>
                                         <td>
-                                            <input type="number" class="form-control form-control-sm text-center" 
-                                                   value="<?= $item['cantidad'] ?>" min="1" max="20"
-                                                   onchange="CarritoModulo.actualizarCantidad(<?= $item['id_producto'] ?>, this.value)">
+                                            <div class="input-group input-group-sm justify-content-center input-group-cantidad" style="width: 110px; margin: 0 auto;">
+                                                <button class="btn btn-outline-secondary px-2" type="button" 
+                                                        onclick="CarritoModulo.cambiarCantidadRelativa(<?= $item['id_producto'] ?>, -1)">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <input type="number" class="form-control form-control-sm text-center input-cantidad px-1" 
+                                                       id="input-cant-<?= $item['id_producto'] ?>"
+                                                       value="<?= $item['cantidad'] ?>" min="1" max="99"
+                                                       onchange="CarritoModulo.actualizarCantidad(<?= $item['id_producto'] ?>, this.value)">
+                                                <button class="btn btn-outline-secondary px-2" type="button" 
+                                                        onclick="CarritoModulo.cambiarCantidadRelativa(<?= $item['id_producto'] ?>, 1)">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
                                         </td>
-                                        <td class="fw-bold text-dark">Q <?= number_format($item['subtotal'], 2) ?></td>
+                                        <td class="fw-bold text-dark" id="subtotal-item-<?= $item['id_producto'] ?>">
+                                            Q <?= number_format($item['subtotal'], 2) ?>
+                                        </td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-danger border-0" 
                                                     onclick="CarritoModulo.eliminarItem(<?= $item['id_producto'] ?>)"
@@ -98,11 +111,11 @@ require_once __DIR__ . '/layouts/header.php';
 
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Subtotal:</span>
-                        <span class="fw-semibold">Q <?= number_format($resumen['subtotal'], 2) ?></span>
+                        <span class="fw-semibold" id="resumen-subtotal">Q <?= number_format($resumen['subtotal'], 2) ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">IVA (12%):</span>
-                        <span class="fw-semibold">Q <?= number_format($resumen['impuesto'], 2) ?></span>
+                        <span class="fw-semibold" id="resumen-impuesto">Q <?= number_format($resumen['impuesto'], 2) ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span class="text-muted">Envío Especializado:</span>
@@ -111,7 +124,7 @@ require_once __DIR__ . '/layouts/header.php';
 
                     <div class="d-flex justify-content-between fs-5 fw-bold border-top pt-3 mb-4">
                         <span>Total:</span>
-                        <span class="text-primary">Q <?= number_format($resumen['total'], 2) ?></span>
+                        <span class="text-primary" id="resumen-total">Q <?= number_format($resumen['total'], 2) ?></span>
                     </div>
 
                     <?php if (estaAutenticado()): ?>

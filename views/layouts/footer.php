@@ -6,7 +6,7 @@
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
                     <h5 class="d-flex align-items-center">
-                        <i class="bi bi-lightning-charge-fill text-warning me-2"></i> ElectroHogar
+                        <i class="bi bi-lightning-charge-fill text-warning me-2"></i> Doméstik
                     </h5>
                     <p class="small">Líderes en electrodomésticos y tecnología de línea blanca para el hogar. Garantía, respaldo técnico y eficiencia energética comprobada.</p>
                     <div class="d-flex gap-3 text-white fs-5">
@@ -37,12 +37,12 @@
                     <h5>Atención y Soporte</h5>
                     <p class="small mb-1"><i class="bi bi-geo-alt me-2 text-primary"></i> Ciudad de Guatemala, Guatemala</p>
                     <p class="small mb-1"><i class="bi bi-telephone me-2 text-primary"></i> +(502) 2200-0000</p>
-                    <p class="small"><i class="bi bi-envelope me-2 text-primary"></i> soporte@electrohogar.com</p>
+                    <p class="small"><i class="bi bi-envelope me-2 text-primary"></i> soporte@domestik.com</p>
                 </div>
             </div>
             <hr class="border-secondary my-4">
             <div class="d-flex flex-wrap justify-content-between align-items-center small">
-                <span>&copy; 2026 ElectroHogar. Proyecto Académico de Comercio Electrónico.</span>
+                <span>&copy; 2026 Doméstik. Proyecto Académico de Comercio Electrónico.</span>
                 <span class="badge bg-dark border border-secondary text-secondary">
                     <i class="bi bi-code-slash me-1"></i> MVC + MySQL InnoDB ACID
                 </span>
