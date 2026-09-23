@@ -1,0 +1,18 @@
+name: Domestik
+values:
+  - key: base_url
+    value: 'http://localhost/Proyecto_Tienda_online'
+  - key: admin_email
+    value: ''
+  - key: admin_password
+    value: ''
+  - key: product_id
+    value: '1'
+  - key: order_id
+    value: '1'
+  - key: payment_method_id
+    value: '1'
+  - key: csrf_checkout
+    value: ''
+  - key: csrf_admin_pedidos
+    value: ''
