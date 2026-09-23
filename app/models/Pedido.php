@@ -216,7 +216,7 @@ class Pedido extends Model
         $idUsuario = $this->validarId($idUsuario, 'usuario');
 
         $sql = 'SELECT p.id_pedido, p.numero_pedido, p.fecha_pedido,
-                       p.subtotal, p.impuesto, p.total, p.direccion_envio,
+                       p.subtotal, p.impuesto, p.total, p.direccion_envio, p.notas,
                        ep.nombre_estado, mp.nombre_metodo,
                        COALESCE((
                            SELECT SUM(dp.cantidad)
@@ -236,6 +236,60 @@ class Pedido extends Model
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Obtiene el detalle completo de un pedido específico incluyendo sus artículos e información fiscal.
+     */
+    public function obtenerDetalleCompleto(int $idPedido, int $idUsuario = 0, bool $esAdmin = false): ?array
+    {
+        $sql = 'SELECT p.id_pedido, p.numero_pedido, p.fecha_pedido,
+                       p.subtotal, p.impuesto, p.total, p.direccion_envio, p.notas,
+                       p.id_estado_pedido, ep.nombre_estado,
+                       p.id_metodo_pago, mp.nombre_metodo,
+                       u.id_usuario, u.nombre AS nombre_usuario, u.apellido AS apellido_usuario,
+                       u.correo AS correo_usuario, u.telefono AS telefono_usuario
+                FROM pedidos p
+                INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+                INNER JOIN estados_pedido ep ON p.id_estado_pedido = ep.id_estado_pedido
+                INNER JOIN metodos_pago mp ON p.id_metodo_pago = mp.id_metodo_pago
+                WHERE p.id_pedido = :id_pedido';
+
+        if (!$esAdmin && $idUsuario > 0) {
+            $sql .= ' AND p.id_usuario = :id_usuario';
+        }
+
+        $sql .= ' LIMIT 1';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id_pedido', $idPedido, PDO::PARAM_INT);
+        if (!$esAdmin && $idUsuario > 0) {
+            $stmt->bindValue(':id_usuario', $idUsuario, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$pedido) {
+            return null;
+        }
+
+        // Consultar los productos del detalle
+        $sqlItems = 'SELECT dp.id_detalle, dp.id_producto, dp.cantidad, dp.precio_unitario, dp.subtotal,
+                            prod.nombre AS nombre_producto, prod.codigo_modelo, prod.imagen,
+                            cat.nombre_categoria, m.nombre_marca
+                     FROM detalle_pedido dp
+                     INNER JOIN productos prod ON dp.id_producto = prod.id_producto
+                     INNER JOIN categorias cat ON prod.id_categoria = cat.id_categoria
+                     INNER JOIN marcas m ON prod.id_marca = m.id_marca
+                     WHERE dp.id_pedido = :id_pedido
+                     ORDER BY dp.id_detalle ASC';
+
+        $stmtItems = $this->db->prepare($sqlItems);
+        $stmtItems->bindValue(':id_pedido', $idPedido, PDO::PARAM_INT);
+        $stmtItems->execute();
+
+        $pedido['items'] = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        return $pedido;
     }
 
     private function validarMetodoPagoActivo(int $idMetodoPago): void

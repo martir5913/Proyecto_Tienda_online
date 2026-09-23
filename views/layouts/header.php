@@ -1,7 +1,9 @@
 <?php
 // Header Global - Layout Principal
 require_once dirname(__DIR__, 2) . '/config/config.php';
-require_once dirname(__DIR__, 2) . '/app/controllers/CarritoController.php';
+if (!class_exists('App\Controllers\CarritoController')) {
+    require_once dirname(__DIR__, 2) . '/app/controllers/CarritoController.php';
+}
 
 use App\Controllers\CarritoController;
 

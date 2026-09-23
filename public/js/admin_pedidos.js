@@ -341,8 +341,13 @@ const AdminPedidosModulo = {
                     <div class="d-flex justify-content-between small mb-1">
                         <span>Impuesto</span><strong>Q ${this.formatearDinero(pedido.impuesto)}</strong>
                     </div>
-                    <div class="d-flex justify-content-between border-top pt-2">
+                    <div class="d-flex justify-content-between border-top pt-2 mb-3">
                         <span class="fw-bold">Total</span><strong>Q ${this.formatearDinero(pedido.total)}</strong>
+                    </div>
+                    <div class="text-end">
+                        <a href="index.php?ruta=factura&id=${pedido.id_pedido}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-printer me-1"></i> Ver / Imprimir Factura Electrónica
+                        </a>
                     </div>
                 </div>
             </div>
