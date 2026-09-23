@@ -17,6 +17,12 @@ const AdminCategorias = {
         this.modalEliminar = bootstrap.Modal.getOrCreateInstance(this.modalEliminarElemento);
         this.idEliminar = null;
 
+        // Inicializar tooltips de Bootstrap
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach((el) => {
+            bootstrap.Tooltip.getOrCreateInstance(el);
+        });
+
         document.getElementById('btn-nueva-categoria')?.addEventListener('click', () => {
             this.prepararNueva();
         });
@@ -64,6 +70,17 @@ const AdminCategorias = {
         this.form.classList.remove('was-validated');
         document.getElementById('categoria-accion').value = 'crear';
         document.getElementById('categoria-id').value = '';
+        
+        const contenedorId = document.getElementById('contenedor-id-visual');
+        const contenedorNombre = document.getElementById('contenedor-nombre-col');
+        const contenedorEstado = document.getElementById('contenedor-estado-col');
+        if (contenedorId && contenedorNombre && contenedorEstado) {
+            contenedorId.classList.add('d-none');
+            contenedorNombre.className = 'col-md-8';
+            contenedorEstado.className = 'col-md-4';
+            document.getElementById('categoria-id-visual').value = '';
+        }
+
         document.getElementById('categoria-activo').value = '1';
         document.getElementById('modalCategoriaTitulo').textContent = 'Nueva categoría';
         document.getElementById('categoria-imagen-actual-contenedor').classList.add('d-none');
@@ -100,6 +117,17 @@ const AdminCategorias = {
             this.form.classList.remove('was-validated');
             document.getElementById('categoria-accion').value = 'actualizar';
             document.getElementById('categoria-id').value = categoria.id_categoria || '';
+
+            const contenedorId = document.getElementById('contenedor-id-visual');
+            const contenedorNombre = document.getElementById('contenedor-nombre-col');
+            const contenedorEstado = document.getElementById('contenedor-estado-col');
+            if (contenedorId && contenedorNombre && contenedorEstado) {
+                contenedorId.classList.remove('d-none');
+                contenedorNombre.className = 'col-md-6';
+                contenedorEstado.className = 'col-md-3';
+                document.getElementById('categoria-id-visual').value = categoria.id_categoria || '';
+            }
+
             document.getElementById('categoria-nombre').value = categoria.nombre_categoria || '';
             document.getElementById('categoria-descripcion').value = categoria.descripcion || '';
             document.getElementById('categoria-activo').value = Number(categoria.activo) === 1 ? '1' : '0';

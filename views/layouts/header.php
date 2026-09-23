@@ -121,6 +121,7 @@ $totalCarrito = $carritoCtrl->contarItems();
                                     <li><h6 class="dropdown-header text-primary fw-bold">Administración</h6></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_productos"><i class="bi bi-boxes me-2"></i>Inventario y Productos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_categorias"><i class="bi bi-tags me-2"></i>Gestión de Categorías</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"><i class="bi bi-receipt me-2"></i>Pedidos y Envíos</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"><i class="bi bi-people me-2"></i>Gestión de Usuarios</a></li>
                                 <?php endif; ?>
