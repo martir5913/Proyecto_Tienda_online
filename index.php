@@ -51,6 +51,11 @@ switch ($ruta) {
     case 'admin_pedidos':
         require_once __DIR__ . '/views/admin/pedidos.php';
         break;
+        
+    case 'admin_categorias':
+        require_once __DIR__ . '/views/admin/categorias.php';
+        break;
+
 
     case 'admin_usuarios':
         require_once __DIR__ . '/views/admin/usuarios.php';

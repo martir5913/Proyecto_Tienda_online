@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{base_url}}/api/productos.php?id={{product_id}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  id: "{{product_id}}"
+order: 3000

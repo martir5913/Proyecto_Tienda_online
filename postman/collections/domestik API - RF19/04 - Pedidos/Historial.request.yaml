@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{base_url}}/api/pedidos.php?action=historial"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  action: historial
+order: 1000

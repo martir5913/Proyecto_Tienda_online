@@ -52,6 +52,54 @@ const AdminApiModulo = {
         return `${this.baseUrl}/${limpio}`;
     },
 
+    /**
+     * Modal asíncrono para reemplazar el window.confirm()
+     */
+    confirmarAccion(mensaje) {
+        return new Promise((resolve) => {
+            const modalEl = document.getElementById('modalConfirmacionApi');
+            const mensajeEl = document.getElementById('mensajeConfirmacionApi');
+            const btnAceptar = document.getElementById('btnConfirmarApiAceptar');
+
+            if (!modalEl || !btnAceptar) {
+                console.warn("No se encontró el modal de confirmación en el DOM.");
+                resolve(true); 
+                return;
+            }
+
+            if (mensaje) mensajeEl.textContent = mensaje;
+
+            // Se asume que Bootstrap está cargado en el proyecto
+            const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+            let resuelto = false;
+
+            const limpiarEventos = () => {
+                btnAceptar.removeEventListener('click', onAceptar);
+                modalEl.removeEventListener('hidden.bs.modal', onCancelar);
+            };
+
+            const onAceptar = () => {
+                if (resuelto) return;
+                resuelto = true;
+                limpiarEventos();
+                modalInstance.hide();
+                resolve(true);
+            };
+
+            const onCancelar = () => {
+                if (resuelto) return;
+                resuelto = true;
+                limpiarEventos();
+                resolve(false);
+            };
+
+            btnAceptar.addEventListener('click', onAceptar);
+            modalEl.addEventListener('hidden.bs.modal', onCancelar);
+
+            modalInstance.show();
+        });
+    },
+
     async enviar() {
         const metodo = String(this.method.value || 'GET').toUpperCase();
         const metodosPermitidos = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
@@ -93,11 +141,11 @@ const AdminApiModulo = {
                 opciones.body = cuerpo;
             }
 
-            const continuar = window.confirm(
-                'Esta solicitud puede modificar información del sistema. ¿Deseas continuar?'
-            );
+            // Usamos la nueva promesa para mostrar el modal de Bootstrap
+            const mensaje = `Se ejecutará una petición ${metodo} que puede modificar información del sistema. ¿Deseas continuar?`;
+            const continuar = await this.confirmarAccion(mensaje);
 
-            if (!continuar) return;
+            if (!continuar) return; // Se cancela la ejecución si el usuario dice que no
         }
 
         this.btnEnviar.disabled = true;
@@ -146,4 +194,5 @@ const AdminApiModulo = {
     }
 };
 
+// Iniciar el módulo
 document.addEventListener('DOMContentLoaded', () => AdminApiModulo.init());

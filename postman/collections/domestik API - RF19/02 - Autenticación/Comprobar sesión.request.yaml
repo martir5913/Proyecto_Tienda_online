@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{base_url}}/api/auth.php?action=check"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  action: check
+order: 2000

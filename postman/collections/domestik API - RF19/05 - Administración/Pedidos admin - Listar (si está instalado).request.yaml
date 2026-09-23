@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{base_url}}/api/admin_pedidos.php?action=listar"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  action: listar
+order: 2000

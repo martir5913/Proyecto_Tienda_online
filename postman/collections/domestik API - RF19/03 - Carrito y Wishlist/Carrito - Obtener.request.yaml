@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{base_url}}/api/carrito.php?action=get"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  action: get
+order: 1000

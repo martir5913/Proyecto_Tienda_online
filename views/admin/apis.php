@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 $tituloPagina = 'Pruebas de API | Domestik';
 $scriptEspecifico = 'admin_apis.js';
-$cssEspecifico = 'admin_apis.css';
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';
 
@@ -15,11 +14,9 @@ use App\Middlewares\AuthMiddleware;
 
 AuthMiddleware::verificarAdmin();
 
-/*
-|--------------------------------------------------------------------------
-| APIs disponibles
-|--------------------------------------------------------------------------
-*/
+
+
+/*APIs disponibles*/
 
 $apis = [
     [
@@ -107,23 +104,17 @@ $apis = [
 require_once dirname(__DIR__) . '/layouts/header.php';
 ?>
 
-<!-- =====================================================
-     ESTILOS RESPONSIVOS (Anti deformaciones móviles)
-     ===================================================== -->
 <style>
-    /* 1. MÓVILES Y TABLETS (Menos de 992px) */
-    /* Resuelve el cuadro blanco gigante en móviles */
     .caja-scroll-json textarea {
         min-height: 150px !important;
         height: auto !important;
     }
     #api-response {
         min-height: 150px;
-        max-height: 400px; /* Evita que crezca hasta el infinito */
+        max-height: 400px; 
         overflow-y: auto;
     }
 
-    /* 2. COMPUTADORAS DE ESCRITORIO (Más de 992px) */
     @media (min-width: 992px) {
         .api-workspace {
             height: calc(100vh - 190px);
@@ -147,7 +138,6 @@ require_once dirname(__DIR__) . '/layouts/header.php';
             overflow-y: auto;
         }
 
-        /* C2: Lógica de flexbox para mantener los botones abajo sin hacer scroll de toda la tarjeta */
         .caja-parametros, 
         .caja-parametros form {
             flex: 1 1 auto;
@@ -339,7 +329,99 @@ require_once dirname(__DIR__) . '/layouts/header.php';
     </div>
 
 </div>
+<!-- Confirmación para solicitudes que modifican información -->
+<div
+    class="modal fade"
+    id="modalConfirmarApi"
+    tabindex="-1"
+    aria-labelledby="modalConfirmarApiTitulo"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
 
+            <div class="modal-header border-bottom">
+                <div>
+                    <h5
+                        class="modal-title fw-bold mb-1"
+                        id="modalConfirmarApiTitulo"
+                    >
+                        Confirmar solicitud
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        Esta operación puede modificar información del sistema.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="border rounded-3 p-3 mb-3">
+
+                    <div class="small text-muted mb-1">
+                        Método
+                    </div>
+
+                    <div class="fw-semibold mb-3">
+                        <span
+                            class="badge text-bg-light border text-dark"
+                            id="confirmar-api-metodo"
+                        >
+                            POST
+                        </span>
+                    </div>
+
+                    <div class="small text-muted mb-1">
+                        Endpoint
+                    </div>
+
+                    <div
+                        class="font-monospace small text-break"
+                        id="confirmar-api-endpoint"
+                    >
+                        api/productos.php
+                    </div>
+
+                </div>
+
+                <div class="small text-muted">
+                    Revisa el método, el endpoint y el Body JSON antes de continuar.
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary-app"
+                    id="btn-confirmar-api"
+                >
+                    <i class="bi bi-send-check me-1"></i>
+                    Confirmar y enviar
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 <?php
 require_once dirname(__DIR__) . '/layouts/footer.php';
 ?>
