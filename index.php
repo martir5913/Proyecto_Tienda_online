@@ -32,6 +32,14 @@ switch ($ruta) {
         require_once __DIR__ . '/views/mis_pedidos.php';
         break;
 
+    case 'pedido_confirmacion':
+        require_once __DIR__ . '/views/pedido_confirmacion.php';
+        break;
+
+    case 'factura':
+        require_once __DIR__ . '/views/factura.php';
+        break;
+
     case 'perfil':
         require_once __DIR__ . '/views/perfil.php';
         break;

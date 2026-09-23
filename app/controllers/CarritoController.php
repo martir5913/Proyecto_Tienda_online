@@ -7,6 +7,8 @@ namespace App\Controllers;
 
 use App\Models\Producto;
 
+if (!class_exists('App\Controllers\CarritoController', false)) {
+
 class CarritoController
 {
     private Producto $productoModel;
@@ -130,3 +132,6 @@ class CarritoController
         $_SESSION['carrito'] = [];
     }
 }
+
+}
+
