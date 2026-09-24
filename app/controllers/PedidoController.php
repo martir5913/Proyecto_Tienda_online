@@ -81,4 +81,9 @@ class PedidoController
     {
         return $this->pedidoModel->obtenerPorUsuario($idUsuario);
     }
+
+    public function getDetalle(int $idPedido, int $idUsuario = 0, bool $esAdmin = false): ?array
+    {
+        return $this->pedidoModel->obtenerDetalleCompleto($idPedido, $idUsuario, $esAdmin);
+    }
 }

@@ -145,10 +145,9 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                             <th class="text-end pe-4">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php if (empty($categorias)): ?>
+                                  <?php if (empty($categorias)): ?>
                             <tr>
-                                <td colspan="5" class="text-center py-5 text-muted">
+                                <td colspan="6" class="text-center py-5 text-muted">
                                     <i class="bi bi-inbox fs-2 d-block mb-2"></i>
                                     No se encontraron categorías con los filtros seleccionados.
                                 </td>
@@ -161,11 +160,11 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                             $totalProductos = (int)$categoria['total_productos'];
                             ?>
                             <tr>
-                                <td class="ps-4" style="min-width: 250px;">
+                                <td class="ps-4" style="min-width: 220px;">
                                     <div class="d-flex align-items-center gap-3">
                                         <div
                                             class="border rounded-3 bg-light d-flex align-items-center justify-content-center flex-shrink-0"
-                                            style="width: 56px; height: 56px; overflow: hidden;"
+                                            style="width: 48px; height: 48px; overflow: hidden;"
                                         >
                                             <?php if (!empty($categoria['imagen'])): ?>
                                                 <img
@@ -180,24 +179,19 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                                             <?php endif; ?>
                                         </div>
 
-                                        <div>
-                                            <div class="fw-semibold text-dark">
-                                                <?= htmlspecialchars((string)$categoria['nombre_categoria'], ENT_QUOTES, 'UTF-8') ?>
-                                            </div>
-                                            <div class="small text-muted">
-                                                ID: <?= (int)$categoria['id_categoria'] ?>
-                                            </div>
+                                        <div class="fw-semibold text-dark">
+                                            <?= htmlspecialchars((string)$categoria['nombre_categoria'], ENT_QUOTES, 'UTF-8') ?>
                                         </div>
                                     </div>
                                 </td>
 
-                                <td style="min-width: 320px;">
+                                <td style="min-width: 260px;">
                                     <?php if (!empty($categoria['descripcion'])): ?>
                                         <span class="text-muted small">
                                             <?= htmlspecialchars((string)$categoria['descripcion'], ENT_QUOTES, 'UTF-8') ?>
                                         </span>
                                     <?php else: ?>
-                                        <span class="text-muted small">Sin descripción</span>
+                                        <span class="text-muted small fst-italic">Sin descripción</span>
                                     <?php endif; ?>
                                 </td>
 
@@ -218,14 +212,18 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                                     </span>
                                 </td>
 
-                                <td class="text-end pe-4" style="min-width: 245px;">
-                                    <div class="d-inline-flex flex-wrap justify-content-end gap-1">
+                                <td class="text-end pe-4" style="width: 140px; white-space: nowrap;">
+                                    <div class="d-inline-flex align-items-center gap-1">
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-outline-primary btn-editar-categoria"
                                             data-id="<?= (int)$categoria['id_categoria'] ?>"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Editar categoría"
+                                            aria-label="Editar categoría"
                                         >
-                                            <i class="bi bi-pencil-square me-1"></i>Editar
+                                            <i class="bi bi-pencil-square"></i>
                                         </button>
 
                                         <button
@@ -233,9 +231,12 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                                             class="btn btn-sm <?= $activa ? 'btn-outline-secondary' : 'btn-outline-success' ?> btn-estado-categoria"
                                             data-id="<?= (int)$categoria['id_categoria'] ?>"
                                             data-activo="<?= $activa ? '0' : '1' ?>"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="<?= $activa ? 'Desactivar categoría' : 'Activar categoría' ?>"
+                                            aria-label="<?= $activa ? 'Desactivar categoría' : 'Activar categoría' ?>"
                                         >
-                                            <i class="bi <?= $activa ? 'bi-pause-circle' : 'bi-play-circle' ?> me-1"></i>
-                                            <?= $activa ? 'Desactivar' : 'Activar' ?>
+                                            <i class="bi <?= $activa ? 'bi-pause-circle' : 'bi-play-circle' ?>"></i>
                                         </button>
 
                                         <button
@@ -243,10 +244,13 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                                             class="btn btn-sm btn-outline-danger btn-eliminar-categoria"
                                             data-id="<?= (int)$categoria['id_categoria'] ?>"
                                             data-nombre="<?= htmlspecialchars((string)$categoria['nombre_categoria'], ENT_QUOTES, 'UTF-8') ?>"
-                                           data-productos="<?= (int)$categoria['total_productos'] ?>"
+                                            data-productos="<?= (int)$categoria['total_productos'] ?>"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Eliminar categoría"
+                                            aria-label="Eliminar categoría"
                                         >
-                                            <i class="bi bi-trash me-1"></i>
-                                            Eliminar
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -281,7 +285,22 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                     >
 
                     <div class="row g-3">
-                        <div class="col-md-8">
+                        <div class="col-md-3 d-none" id="contenedor-id-visual">
+                            <label for="categoria-id-visual" class="form-label fw-semibold text-muted">ID Categoría</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="bi bi-hash"></i></span>
+                                <input
+                                    type="text"
+                                    class="form-control bg-light text-muted fw-bold"
+                                    id="categoria-id-visual"
+                                    readonly
+                                    tabindex="-1"
+                                    aria-readonly="true"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="col-md-8" id="contenedor-nombre-col">
                             <label for="categoria-nombre" class="form-label fw-semibold">Nombre de categoría</label>
                             <input
                                 type="text"
@@ -294,13 +313,13 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                             <div class="invalid-feedback">Ingrese el nombre de la categoría.</div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="contenedor-estado-col">
                             <label for="categoria-activo" class="form-label fw-semibold">Estado</label>
                             <select class="form-select" id="categoria-activo" name="activo" required>
                                 <option value="1">Activa</option>
                                 <option value="0">Inactiva</option>
                             </select>
-                        </div>
+                        </div>                  </div>
 
                         <div class="col-12">
                             <label for="categoria-descripcion" class="form-label fw-semibold">Descripción</label>
