@@ -142,6 +142,105 @@ class AuthController
         return ['success' => false, 'message' => 'Error al actualizar la contraseña.'];
     }
 
+    // * Solicita recuperación de contraseña y envía notificación por correo
+    public function solicitarRecuperacion(string $correo): array
+    {
+        $correo = trim($correo);
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            return ['success' => false, 'message' => 'Por favor, ingresa una dirección de correo válida.'];
+        }
+
+        $usuario = $this->usuarioModel->buscarPorCorreo($correo);
+
+        // Si el usuario existe y está activo, enviamos el correo
+        if ($usuario && (int)($usuario['id_estado_usuario'] ?? 1) === 1) {
+            $token = $this->generarTokenRecuperacion($usuario);
+            $baseUrl = defined('BASE_URL') ? BASE_URL : 'http://localhost:8000/Proyecto_Tienda_online';
+            $enlace = $baseUrl . '/index.php?ruta=restablecer_password&token=' . urlencode($token);
+
+            $emailService = new \App\Services\EmailService();
+            $emailService->enviarRecuperacionPassword($usuario, $enlace);
+        }
+
+        // Mensaje genérico para proteger la privacidad de las cuentas (evita enumeración de usuarios)
+        return [
+            'success' => true,
+            'message' => 'Si el correo ingresado coincide con una cuenta activa, hemos enviado un enlace para restablecer tu contraseña. Revisa tu bandeja de entrada.'
+        ];
+    }
+
+    // * Valida un token de recuperación y devuelve el usuario si es válido
+    public function validarTokenRecuperacion(string $token): ?array
+    {
+        $partes = explode('.', base64_decode($token) ?: '');
+        if (count($partes) !== 3) {
+            return null;
+        }
+
+        [$idUsuarioStr, $expiracionStr, $firma] = $partes;
+        $idUsuario = (int)$idUsuarioStr;
+        $expiracion = (int)$expiracionStr;
+
+        if ($idUsuario <= 0 || $expiracion < time()) {
+            return null;
+        }
+
+        $usuario = $this->usuarioModel->obtenerPorId($idUsuario);
+        if (!$usuario) {
+            return null;
+        }
+
+        // Consultar hash actual para validar la firma
+        $usuarioCompleto = $this->usuarioModel->buscarPorCorreo($usuario['correo']);
+        if (!$usuarioCompleto) {
+            return null;
+        }
+
+        $secret = (string)env('APP_SECRET', 'secret_default_key_2026');
+        $firmaEsperada = hash_hmac('sha256', "{$idUsuario}.{$expiracion}." . $usuarioCompleto['password'], $secret);
+
+        if (!hash_equals($firmaEsperada, $firma)) {
+            return null;
+        }
+
+        return $usuario;
+    }
+
+    // * Restablece la contraseña utilizando el token verificado
+    public function restablecerPasswordConToken(string $token, string $nuevaPassword, string $confirmPassword): array
+    {
+        $usuario = $this->validarTokenRecuperacion($token);
+        if (!$usuario) {
+            return ['success' => false, 'message' => 'El enlace de recuperación es inválido o ha expirado. Solicita uno nuevo.'];
+        }
+
+        if (strlen($nuevaPassword) < 6) {
+            return ['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres.'];
+        }
+
+        if ($nuevaPassword !== $confirmPassword) {
+            return ['success' => false, 'message' => 'Las contraseñas ingresadas no coinciden.'];
+        }
+
+        $exito = $this->usuarioModel->actualizarPassword((int)$usuario['id_usuario'], $nuevaPassword);
+        if ($exito) {
+            return ['success' => true, 'message' => 'Tu contraseña ha sido restablecida exitosamente. Ya puedes iniciar sesión.'];
+        }
+
+        return ['success' => false, 'message' => 'No fue posible actualizar la contraseña. Inténtalo más tarde.'];
+    }
+
+    private function generarTokenRecuperacion(array $usuario): string
+    {
+        $idUsuario = (int)$usuario['id_usuario'];
+        $expiracion = time() + 3600; // 1 hora de validez
+        $secret = (string)env('APP_SECRET', 'secret_default_key_2026');
+        $hashPassword = (string)($usuario['password'] ?? '');
+
+        $firma = hash_hmac('sha256', "{$idUsuario}.{$expiracion}.{$hashPassword}", $secret);
+        return base64_encode("{$idUsuario}.{$expiracion}.{$firma}");
+    }
+
     // * Cierra la sesión activa
      
     public function logout(): void
@@ -150,3 +249,4 @@ class AuthController
         session_destroy();
     }
 }
+

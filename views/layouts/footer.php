@@ -42,9 +42,9 @@
             </div>
             <hr class="border-secondary my-4">
             <div class="d-flex flex-wrap justify-content-between align-items-center small">
-                <span>&copy; 2026 Doméstik. Proyecto Académico de Comercio Electrónico.</span>
+                <span>&copy; 2026 Doméstik. Proyecto Académico de Comercio Electrónico - INTECAP.</span>
                 <span class="badge bg-dark border border-secondary text-secondary">
-                    <i class="bi bi-code-slash me-1"></i> MVC + MySQL InnoDB ACID
+                    <i class="bi bi-code-slash me-1"></i> MVC + MySQL + PHP
                 </span>
             </div>
         </div>

@@ -57,13 +57,18 @@ require_once __DIR__ . '/layouts/header.php';
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label small fw-semibold">Contraseña</label>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label small fw-semibold mb-0">Contraseña</label>
+                            <a href="<?= BASE_URL ?>/index.php?ruta=recuperar_password" class="extra-small text-decoration-none text-primary fw-semibold">¿Olvidaste tu contraseña?</a>
+                        </div>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
                             <input type="password" name="password" class="form-control" placeholder="••••••••" required value="admin123">
                         </div>
                     </div>
+
+                    <div class="mb-4"></div>
 
                     <button type="submit" class="btn btn-primary-app w-100 py-2 fw-semibold">
                         <i class="bi bi-box-arrow-in-right me-2"></i> Ingresar al Sistema

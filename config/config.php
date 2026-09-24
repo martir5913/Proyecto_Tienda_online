@@ -57,6 +57,16 @@ if (file_exists(BASE_DIR . '/vendor/autoload.php')) {
     require_once BASE_DIR . '/vendor/autoload.php';
 }
 
+// Respaldo de PHPMailer bundled (para hostings compartidos donde no se sube vendor/)
+if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
+    $libsMailer = BASE_DIR . '/app/libs/PHPMailer';
+    if (file_exists($libsMailer . '/PHPMailer.php')) {
+        require_once $libsMailer . '/Exception.php';
+        require_once $libsMailer . '/PHPMailer.php';
+        require_once $libsMailer . '/SMTP.php';
+    }
+}
+
 // Autoloader PSR-4 para cargar automáticamente clases en App\ y Config\
 spl_autoload_register(function ($class) {
     $prefixes = [
@@ -103,8 +113,10 @@ if (!empty($envAppUrl)) {
     $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
     $dir = str_replace('\\', '/', dirname($scriptName));
     
-    // Si viene por CLI o ruta absoluta de servidor, forzar la ruta web estándar
-    if ($dir === '/' || $dir === '.' || str_contains($dir, '/var/www')) {
+    // Si corre en la raíz de un dominio de hosting (como InfinityFree en /htdocs)
+    if ($dir === '/' || $dir === '.' || $dir === '/api') {
+        $basePath = '';
+    } elseif (str_contains($dir, '/var/www')) {
         $basePath = '/Proyecto_Tienda_online';
     } else {
         $basePath = rtrim($dir, '/');

@@ -24,6 +24,14 @@ switch ($ruta) {
         require_once __DIR__ . '/views/login.php';
         break;
 
+    case 'recuperar_password':
+        require_once __DIR__ . '/views/recuperar_password.php';
+        break;
+
+    case 'restablecer_password':
+        require_once __DIR__ . '/views/restablecer_password.php';
+        break;
+
     case 'registro':
         require_once __DIR__ . '/views/registro.php';
         break;

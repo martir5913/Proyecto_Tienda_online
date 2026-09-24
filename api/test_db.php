@@ -69,14 +69,14 @@ try {
             (int) $stmt->fetchColumn();
     }
 
-    // Verificación de transacciones.
+    // Verificación de transacciones ACID (compatible con MySQL 5.7/8.0 y MariaDB 10.x).
     $pdo->beginTransaction();
 
     $pdo->query(
         'SELECT id_producto
          FROM productos
          LIMIT 1
-         FOR SHARE'
+         FOR UPDATE'
     );
 
     $pdo->rollBack();
@@ -127,17 +127,14 @@ try {
 
 } catch (Throwable $e) {
 
-    // Información completa solamente en logs del servidor.
-    error_log(
-        'API test_db.php: ' .
-        $e->getMessage()
-    );
+    error_log('API test_db.php: ' . $e->getMessage());
 
     jsonResponse(
         false,
         'No fue posible verificar la base de datos.',
         [
-            'database_status' => 'OFFLINE'
+            'database_status' => 'OFFLINE',
+            'error_detail' => $e->getMessage()
         ],
         500
     );

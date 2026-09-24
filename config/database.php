@@ -67,13 +67,17 @@ class Database
             try {
                 self::$instance = new PDO($dsn, $user, $pass, $options);
             } catch (PDOException $e) {
-                // Si falla con 'database', reintentar con '127.0.0.1' y puerto '3308' (entorno local fuera de docker)
-                try {
-                    $fallbackDsn = "mysql:host=127.0.0.1;port=3308;dbname={$db};charset={$charset}";
-                    self::$instance = new PDO($fallbackDsn, $user, $pass, $options);
-                } catch (PDOException $e2) {
-                    throw new PDOException("Error de conexión a la base de datos: " . $e2->getMessage(), (int)$e2->getCode());
+                // Solo intentar fallback a Docker/XAMPP local si host por defecto era 'database'
+                if ($host === 'database') {
+                    try {
+                        $fallbackDsn = "mysql:host=127.0.0.1;port=3308;dbname={$db};charset={$charset}";
+                        self::$instance = new PDO($fallbackDsn, $user, $pass, $options);
+                        return self::$instance;
+                    } catch (PDOException $e2) {
+                        throw new PDOException("Error de conexión a la base de datos (Host: {$host}): " . $e->getMessage(), (int)$e->getCode());
+                    }
                 }
+                throw new PDOException("Error de conexión a la base de datos (Host: {$host}, BD: {$db}, Usuario: {$user}): " . $e->getMessage(), (int)$e->getCode());
             }
         }
 
