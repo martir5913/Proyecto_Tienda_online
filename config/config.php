@@ -18,6 +18,45 @@ define('APP_DIR', BASE_DIR . '/app');
 define('VIEWS_DIR', BASE_DIR . '/views');
 define('PUBLIC_DIR', BASE_DIR . '/public');
 
+// Función helper para leer variables de entorno con valor por defecto
+function env(string $key, mixed $default = null): mixed
+{
+    $val = getenv($key);
+    if ($val !== false) {
+        return $val;
+    }
+    return $_ENV[$key] ?? $default;
+}
+
+// Cargar variables de entorno desde .env si existe
+(function () {
+    $envPath = BASE_DIR . '/.env';
+    if (!file_exists($envPath)) {
+        return;
+    }
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || str_starts_with($line, '#')) {
+            continue;
+        }
+        if (str_contains($line, '=')) {
+            [$k, $v] = explode('=', $line, 2);
+            $k = trim($k);
+            $v = trim(trim($v), "\"'");
+            if (!array_key_exists($k, $_ENV)) {
+                $_ENV[$k] = $v;
+                putenv("$k=$v");
+            }
+        }
+    }
+})();
+
+// Cargar autoloader de Composer si existe (PHPMailer, etc.)
+if (file_exists(BASE_DIR . '/vendor/autoload.php')) {
+    require_once BASE_DIR . '/vendor/autoload.php';
+}
+
 // Autoloader PSR-4 para cargar automáticamente clases en App\ y Config\
 spl_autoload_register(function ($class) {
     $prefixes = [

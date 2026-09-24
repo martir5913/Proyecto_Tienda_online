@@ -38,6 +38,18 @@ const AdminPedidosModulo = {
         this.tabla?.addEventListener('click', (event) => this.manejarAccionTabla(event));
         this.btnConfirmar?.addEventListener('click', () => this.ejecutarAccionConfirmada());
 
+        this.modalDetalleContenido?.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-modal-reenviar-correo');
+            if (btn) {
+                const idPedido = Number.parseInt(btn.dataset.id, 10);
+                this.abrirConfirmacion({
+                    tipo: 'reenviar_correo',
+                    idPedido,
+                    texto: '¿Deseas reenviar el correo de confirmación de compra al cliente para este pedido?'
+                });
+            }
+        });
+
         this.cargarPedidos();
     },
 
@@ -123,6 +135,9 @@ const AdminPedidosModulo = {
         const botones = [
             `<button type="button" class="btn btn-sm btn-outline-primary me-1 btn-ver-pedido" data-id="${idPedido}" title="Ver detalle">
                 <i class="bi bi-eye"></i>
+            </button>`,
+            `<button type="button" class="btn btn-sm btn-outline-info me-1 btn-reenviar-correo" data-id="${idPedido}" title="Reenviar correo de confirmación">
+                <i class="bi bi-envelope-at"></i>
             </button>`
         ];
 
@@ -168,6 +183,17 @@ const AdminPedidosModulo = {
             return;
         }
 
+        const btnReenviar = event.target.closest('.btn-reenviar-correo');
+        if (btnReenviar) {
+            const idPedido = Number.parseInt(btnReenviar.dataset.id, 10);
+            this.abrirConfirmacion({
+                tipo: 'reenviar_correo',
+                idPedido,
+                texto: '¿Deseas reenviar el correo de confirmación de compra al cliente para este pedido?'
+            });
+            return;
+        }
+
         const btnEstado = event.target.closest('.btn-cambiar-estado');
         if (btnEstado) {
             const idPedido = Number.parseInt(btnEstado.dataset.id, 10);
@@ -207,16 +233,24 @@ const AdminPedidosModulo = {
         this.btnConfirmar.disabled = true;
 
         try {
-            const body = accion.tipo === 'estado'
-                ? {
+            let body = {};
+            if (accion.tipo === 'estado') {
+                body = {
                     action: 'cambiar_estado',
                     id_pedido: accion.idPedido,
                     id_estado_pedido: accion.estado
-                }
-                : {
+                };
+            } else if (accion.tipo === 'eliminar') {
+                body = {
                     action: 'eliminar',
                     id_pedido: accion.idPedido
                 };
+            } else if (accion.tipo === 'reenviar_correo') {
+                body = {
+                    action: 'reenviar_correo',
+                    id_pedido: accion.idPedido
+                };
+            }
 
             const resp = await fetch(this.apiUrl, {
                 method: 'POST',
@@ -236,7 +270,9 @@ const AdminPedidosModulo = {
 
             bootstrap.Modal.getInstance(this.modalConfirmar)?.hide();
             this.mostrarAlerta(res.message, 'success');
-            await this.cargarPedidos();
+            if (accion.tipo !== 'reenviar_correo') {
+                await this.cargarPedidos();
+            }
         } catch (error) {
             this.mostrarAlerta(error.message, 'danger');
         } finally {
@@ -344,7 +380,10 @@ const AdminPedidosModulo = {
                     <div class="d-flex justify-content-between border-top pt-2 mb-3">
                         <span class="fw-bold">Total</span><strong>Q ${this.formatearDinero(pedido.total)}</strong>
                     </div>
-                    <div class="text-end">
+                    <div class="d-flex justify-content-end gap-2 flex-wrap">
+                        <button type="button" class="btn btn-outline-info btn-sm btn-modal-reenviar-correo" data-id="${pedido.id_pedido}">
+                            <i class="bi bi-envelope-at me-1"></i> Reenviar Correo
+                        </button>
                         <a href="index.php?ruta=factura&id=${pedido.id_pedido}" target="_blank" class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-printer me-1"></i> Ver / Imprimir Factura Electrónica
                         </a>

@@ -73,6 +73,10 @@ switch ($ruta) {
         require_once __DIR__ . '/views/admin/apis.php';
         break;
 
+    case 'admin_preview_email':
+        require_once __DIR__ . '/views/admin/preview_email.php';
+        break;
+
     case 'logout':
         require_once __DIR__ . '/app/controllers/AuthController.php';
         $auth = new \App\Controllers\AuthController();

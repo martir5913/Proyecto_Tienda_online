@@ -107,4 +107,21 @@ if ($action === 'eliminar') {
     );
 }
 
+if ($action === 'reenviar_correo') {
+    $idPedido = filter_var($params['id_pedido'] ?? null, FILTER_VALIDATE_INT);
+
+    if (!$idPedido || $idPedido <= 0) {
+        jsonResponse(false, 'El ID del pedido no es válido.', null, 400);
+    }
+
+    $res = $controller->reenviarCorreo((int)$idPedido);
+    jsonResponse(
+        $res['success'],
+        $res['message'],
+        null,
+        $res['success'] ? 200 : 400
+    );
+}
+
 jsonResponse(false, 'Acción no reconocida.', null, 400);
+

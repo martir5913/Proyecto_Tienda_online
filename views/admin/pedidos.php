@@ -35,9 +35,14 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                 Gestión administrativa del ciclo de los pedidos registrados.
             </p>
         </div>
-        <a href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard" class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Volver al panel
-        </a>
+        <div class="d-flex gap-2">
+            <a href="<?= BASE_URL ?>/index.php?ruta=admin_preview_email" class="btn btn-outline-info btn-sm">
+                <i class="bi bi-envelope-paper-heart me-1"></i> Plantilla de Correo
+            </a>
+            <a href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Volver al panel
+            </a>
+        </div>
     </div>
 
     <div class="row g-3 mb-4">

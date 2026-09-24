@@ -124,6 +124,7 @@ $totalCarrito = $carritoCtrl->contarItems();
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_categorias"><i class="bi bi-tags me-2"></i>Gestión de Categorías</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"><i class="bi bi-receipt me-2"></i>Pedidos y Envíos</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"><i class="bi bi-people me-2"></i>Gestión de Usuarios</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_preview_email"><i class="bi bi-envelope-paper-heart me-2"></i>Plantilla de Correo</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>/index.php?ruta=logout"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
