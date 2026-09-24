@@ -102,6 +102,25 @@ const CatalogoModulo = {
         }
     },
 
+    inicializarTooltips() {
+
+        if (typeof bootstrap === 'undefined') {
+            return;
+        }
+
+        document
+            .querySelectorAll(
+                '[data-bs-toggle="tooltip"]'
+            )
+            .forEach((elemento) => {
+
+                bootstrap.Tooltip.getOrCreateInstance(
+                    elemento
+                );
+
+            });
+    },
+
     renderizarProductos(productos) {
         if (!this.gridProductos) return;
 
@@ -276,13 +295,13 @@ const CatalogoModulo = {
 
                                 <button
                                     type="button"
-                                    class="btn btn-sm btn-outline-primary flex-grow-1 btn-detalle-producto"
+                                    class="btn btn-outline-primary btn-detalle-producto px-3"
                                     data-producto-id="${id}"
-                                >
-
-                                    <i class="bi bi-eye me-1"></i>
-                                    Ver detalles
-
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Ver detalles del producto"
+                                    aria-label="Ver detalles del producto">
+                                    <i class="bi bi-eye"></i>
                                 </button>
 
                                 <button
@@ -492,38 +511,43 @@ const CatalogoModulo = {
 
                         </div>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex justify-content-center gap-2 mt-3">
                             <button
                                 type="button"
-                                class="btn btn-outline-danger"
-                                title="Guardar en Lista de Deseos"
-                                onclick="ElectroApp.toggleWishlist(${Number.parseInt(producto.id_producto, 10) || 0}, this)"
+                                class="btn btn-outline-danger px-3"
+                                onclick="ElectroApp.toggleWishlist(
+                                    ${Number.parseInt(producto.id_producto, 10) || 0},
+                                    this
+                                )"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Agregar a favoritos"
+                                aria-label="Agregar a favoritos"
                             >
-                                <i class="bi bi-heart me-1"></i> Favoritos
+                                <i class="bi bi-heart"></i>
                             </button>
+
 
                             <button
                                 type="button"
-                                class="btn btn-primary-app flex-grow-1"
+                                class="btn btn-primary-app px-3"
                                 onclick="
                                     ElectroApp.agregarAlCarrito(
-                                        ${
-                                            Number.parseInt(
-                                                producto.id_producto,
-                                                10
-                                            ) || 0
-                                        }
+                                        ${Number.parseInt(
+                                            producto.id_producto,
+                                            10
+                                        ) || 0}
                                     )
                                 "
-                                ${
-                                    disponible
-                                        ? ''
-                                        : 'disabled'
-                                }
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Añadir al carrito"
+                                aria-label="Añadir al carrito"
+                                ${disponible ? '' : 'disabled'}
                             >
-                                <i class="bi bi-cart-plus me-1"></i>
-                                Añadir al carrito
+                                <i class="bi bi-cart-plus"></i>
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -616,6 +640,7 @@ const CatalogoModulo = {
             .replaceAll("'", '&#039;');
     }
 };
+
 
 document.addEventListener(
     'DOMContentLoaded',

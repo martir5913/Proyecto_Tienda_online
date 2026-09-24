@@ -1,8 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/productos.php?q=samsung"
-method: GET
-headers:
-  Accept: application/json
-queryParams:
-  q: samsung
-order: 2000

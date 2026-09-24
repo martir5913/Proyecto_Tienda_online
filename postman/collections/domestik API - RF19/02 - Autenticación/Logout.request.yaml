@@ -1,8 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/auth.php?action=logout"
-method: POST
-headers:
-  Accept: application/json
-queryParams:
-  action: logout
-order: 3000

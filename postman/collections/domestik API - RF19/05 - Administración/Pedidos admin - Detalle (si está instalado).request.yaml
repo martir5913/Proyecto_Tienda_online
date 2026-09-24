@@ -1,9 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/admin_pedidos.php?action=detalle&id={{order_id}}"
-method: GET
-headers:
-  Accept: application/json
-queryParams:
-  action: detalle
-  id: "{{order_id}}"
-order: 3000

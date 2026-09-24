@@ -147,8 +147,7 @@ require_once __DIR__ . '/layouts/header.php';
                                             class="btn btn-sm btn-outline-primary flex-grow-1 btn-detalle-producto"
                                             data-producto-id="<?= (int)$prod['id_producto'] ?>"
                                         >
-                                            <i class="bi bi-eye me-1"></i>
-                                            Ver detalles
+                                            <i class="bi bi-eye me-1"></i>    
                                         </button>
 
                                         <button
@@ -225,5 +224,25 @@ require_once __DIR__ . '/layouts/header.php';
 
     </div>
 </div>
+
+<?php
+require_once __DIR__ . '/components/catalogo_resenas.php';
+?>
+
+
+<?php
+$rutaCatalogoResenas =
+    PUBLIC_DIR . '/js/catalogo_resenas.js';
+
+$versionCatalogoResenas =
+    file_exists($rutaCatalogoResenas)
+        ? filemtime($rutaCatalogoResenas)
+        : time();
+?>
+
+<script
+    src="<?= BASE_URL ?>/public/js/catalogo_resenas.js?v=<?= $versionCatalogoResenas ?>"
+    defer
+></script>
 
 <?php require_once __DIR__ . '/layouts/footer.php'; ?>

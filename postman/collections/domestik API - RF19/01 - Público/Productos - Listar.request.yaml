@@ -1,6 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/productos.php"
-method: GET
-headers:
-  Accept: application/json
-order: 1000
