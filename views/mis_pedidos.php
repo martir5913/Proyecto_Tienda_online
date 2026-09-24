@@ -1,6 +1,7 @@
 <?php
 // Vista: Historial de Compras del Cliente (Mis Pedidos)
 $tituloPagina = "Mis Pedidos | Doméstik";
+$scriptEspecifico = 'mis_pedidos.js';
 
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';
 require_once dirname(__DIR__) . '/app/controllers/PedidoController.php';
@@ -11,13 +12,23 @@ use App\Controllers\PedidoController;
 AuthMiddleware::verificarAutenticado();
 $idUsuario = (int)$_SESSION['usuario']['id_usuario'];
 
+if (!isset($_SESSION['csrf_resena']) || !is_string($_SESSION['csrf_resena'])) {
+    $_SESSION['csrf_resena'] = bin2hex(random_bytes(32));
+}
+
 $pedidoCtrl = new PedidoController();
 $pedidos = $pedidoCtrl->getHistorial($idUsuario);
 
 require_once __DIR__ . '/layouts/header.php';
 ?>
 
-<div class="container py-4">
+
+<div class="container py-4"
+    id="mis-pedidos-app"
+    data-base-url="<?= htmlspecialchars(BASE_URL, ENT_QUOTES, 'UTF-8') ?>"
+    data-csrf-resena="<?= htmlspecialchars($_SESSION['csrf_resena'], ENT_QUOTES, 'UTF-8') ?>"
+    >
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-bold mb-1"><i class="bi bi-bag-check me-2"></i>Mis Pedidos</h3>
@@ -87,15 +98,62 @@ require_once __DIR__ . '/layouts/header.php';
                                         <?= htmlspecialchars($p['nombre_estado']) ?>
                                     </span>
                                 </td>
+
                                 <td class="text-end pe-3">
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary" onclick="verDetallePedido(<?= $p['id_pedido'] ?>)" title="Ver Detalle de la Orden">
-                                            <i class="bi bi-eye"></i> Detalle
+
+                                    <div class="btn-group btn-group-sm" role="group">
+
+                                        <!-- DETALLE -->
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary px-2"
+                                            onclick="verDetallePedido(<?= (int)$p['id_pedido'] ?>)"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Ver detalle del pedido"
+                                            aria-label="Ver detalle del pedido"
+                                        >
+                                            <i class="bi bi-eye"></i>
                                         </button>
-                                        <a href="<?= BASE_URL ?>/index.php?ruta=factura&id=<?= $p['id_pedido'] ?>" target="_blank" class="btn btn-outline-secondary" title="Ver / Imprimir Factura Electrónica">
-                                            <i class="bi bi-printer"></i> Factura
+
+                                        <?php if ($p['nombre_estado'] === 'Entregado'): ?>
+
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-primary px-2 btn-resenar-pedido"
+                                                data-pedido-id="<?= (int)$p['id_pedido'] ?>"
+                                                data-pedido-numero="<?= htmlspecialchars(
+                                                    (string)$p['numero_pedido'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Reseñar productos"
+                                                aria-label="Reseñar productos"
+                                            >
+                                                <i class="bi bi-star"></i>
+                                            </button>
+
+                                        <?php endif; ?>
+
+
+                                        <!-- FACTURA -->
+                                        <a
+                                            href="<?= BASE_URL ?>/index.php?ruta=factura&id=<?= (int)$p['id_pedido'] ?>"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="btn btn-outline-secondary px-2"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Ver factura"
+                                            aria-label="Ver factura"
+                                        >
+                                            <i class="bi bi-printer"></i>
                                         </a>
+
                                     </div>
+
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -129,6 +187,154 @@ require_once __DIR__ . '/layouts/header.php';
                 </a>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- RF14: Modal para registrar reseña -->
+<div class="modal fade" id="modal-resena" tabindex="-1" aria-labelledby="modal-resena-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-bottom">
+                <div>
+                    <h5 class="modal-title fw-bold mb-1" id="modal-resena-titulo">
+                        <i class="bi bi-chat-square-heart me-2 text-primary"></i>Calificar producto
+                    </h5>
+                    <p class="small text-muted mb-0" id="resena-producto-nombre">Producto</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <form id="form-resena" novalidate>
+                <div class="modal-body">
+                    <input type="hidden" id="resena-id-producto">
+                    <input type="hidden" id="resena-calificacion" value="0">
+
+                    <div class="alert alert-danger py-2 small d-none" id="resena-alerta" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold mb-1">Tu calificación</label>
+                        <div class="d-flex align-items-center gap-1" aria-label="Calificación de una a cinco estrellas">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <button
+                                    type="button"
+                                    class="btn btn-link text-warning p-0 fs-3 lh-1 btn-estrella-resena"
+                                    data-valor="<?= $i ?>"
+                                    aria-label="<?= $i ?> estrella<?= $i === 1 ? '' : 's' ?>"
+                                    title="<?= $i ?> estrella<?= $i === 1 ? '' : 's' ?>"
+                                >
+                                    <i class="bi bi-star"></i>
+                                </button>
+                            <?php endfor; ?>
+                        </div>
+                        <div class="form-text">Selecciona de 1 a 5 estrellas.</div>
+                    </div>
+
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="resena-comentario" class="form-label fw-semibold mb-0">
+                                Comentario
+                            </label>
+                            <small class="text-muted" id="resena-contador">0/1000</small>
+                        </div>
+                        <textarea
+                            class="form-control"
+                            id="resena-comentario"
+                            rows="4"
+                            maxlength="1000"
+                            placeholder="Cuéntanos tu experiencia con este producto"
+                            required
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary-app" id="btn-guardar-resena">
+                        <i class="bi bi-send-check me-1"></i> Publicar reseña
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- RF14: Productos del pedido disponibles para reseñar -->
+<div
+    class="modal fade"
+    id="modal-productos-resena"
+    tabindex="-1"
+    aria-labelledby="modal-productos-resena-titulo"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <div class="modal-header border-bottom">
+
+                <div>
+                    <h5
+                        class="modal-title fw-bold mb-1"
+                        id="modal-productos-resena-titulo"
+                    >
+                        <i class="bi bi-star me-2 text-primary"></i>
+                        Reseñar productos
+                    </h5>
+
+                    <p
+                        class="small text-muted mb-0"
+                        id="resena-pedido-numero"
+                    >
+                        Selecciona un producto.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                ></button>
+
+            </div>
+
+
+            <div
+                class="modal-body"
+                id="resena-productos-contenido"
+            >
+
+                <div class="text-center py-4 text-muted">
+
+                    <div
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                    ></div>
+
+                    Cargando productos...
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    <i class="bi bi-x-lg me-1"></i>
+                    Cerrar
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
 </div>
 

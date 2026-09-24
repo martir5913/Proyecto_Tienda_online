@@ -209,7 +209,6 @@ class Pedido extends Model
 
     /**
      * Obtiene los pedidos de un usuario.
-     * Esta consulta también es utilizada posteriormente por RF12.
      */
     public function obtenerPorUsuario(int $idUsuario): array
     {
@@ -276,19 +275,41 @@ class Pedido extends Model
         // Consultar los productos del detalle
         $sqlItems = 'SELECT dp.id_detalle, dp.id_producto, dp.cantidad, dp.precio_unitario, dp.subtotal,
                             prod.nombre AS nombre_producto, prod.codigo_modelo, prod.imagen,
-                            cat.nombre_categoria, m.nombre_marca
+                            cat.nombre_categoria, m.nombre_marca, r.id_resena, r.calificacion AS
+                            calificacion_usuario,
+                            r.comentario AS comentario_usuario,
+                            r.fecha AS fecha_resena
+
                      FROM detalle_pedido dp
                      INNER JOIN productos prod ON dp.id_producto = prod.id_producto
                      INNER JOIN categorias cat ON prod.id_categoria = cat.id_categoria
                      INNER JOIN marcas m ON prod.id_marca = m.id_marca
+                     LEFT JOIN resenas r
+                            ON r.id_resena = (
+                                SELECT MAX(r2.id_resena)
+                                FROM resenas r2
+                                WHERE r2.id_usuario = :id_usuario_resena
+                                  AND r2.id_producto = dp.id_producto
+                            )
                      WHERE dp.id_pedido = :id_pedido
                      ORDER BY dp.id_detalle ASC';
 
         $stmtItems = $this->db->prepare($sqlItems);
+        $stmtItems->bindValue(':id_usuario_resena', (int)$pedido['id_usuario'], PDO::PARAM_INT);
         $stmtItems->bindValue(':id_pedido', $idPedido, PDO::PARAM_INT);
         $stmtItems->execute();
 
-        $pedido['items'] = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        $pedidoEntregado = (int)$pedido['id_estado_pedido'] === 4;
+
+        foreach ($items as &$item) {
+            $yaResenado = !empty($item['id_resena']);
+            $item['ya_resenado'] = $yaResenado;
+            $item['puede_resenar'] = $pedidoEntregado && !$yaResenado;
+        }
+        unset($item);
+
+        $pedido['items'] = $items;
         return $pedido;
     }
 

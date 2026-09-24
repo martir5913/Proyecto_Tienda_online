@@ -167,18 +167,28 @@ require_once __DIR__ . '/layouts/header.php';
 
                                     <div class="mt-auto pt-2 border-top">
                                         <div class="product-price mb-2">Q <?= number_format((float)$p['precio'], 2) ?></div>
-                                        <div class="d-flex gap-2">
-                                            <button type="button"
-                                                    class="btn btn-sm btn-outline-primary flex-grow-1 btn-detalle-producto"
-                                                    data-producto-id="<?= (int)$p['id_producto'] ?>">
-                                                <i class="bi bi-eye me-1"></i> Ver detalles
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline-primary px-3 btn-detalle-producto"
+                                                data-producto-id="<?= (int)$p['id_producto'] ?>"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title=" del producto"
+                                                aria-label=" del producto">
+                                                <i class="bi bi-eye"></i>
                                             </button>
+
                                             <button type="button"
-                                                    class="btn btn-sm btn-primary-app"
+                                                    class="btn btn-sm btn-primary-app px-3"
                                                     onclick="ElectroApp.agregarAlCarrito(<?= (int)$p['id_producto'] ?>)"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Añadir al carrito"                                                    
                                                     <?= $disponible ? '' : 'disabled' ?>>
                                                 <i class="bi bi-cart-plus"></i>
                                             </button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -208,5 +218,21 @@ require_once __DIR__ . '/layouts/header.php';
         </div>
     </div>
 </div>
+<!-- Modal actual de detalles -->
+<div class="modal fade" id="modalDetalleProducto">
+  ...
+</div>
+<!-- RF14 -->
+<?php
+require_once __DIR__ . '/components/catalogo_resenas.php';
+?>
 
+<?php
+$rutaCatalogoResenas = PUBLIC_DIR . '/js/catalogo_resenas.js';
+$versionCatalogoResenas = file_exists($rutaCatalogoResenas) ? filemtime($rutaCatalogoResenas) : time();
+?>
+
+<script src="<?= BASE_URL ?>/public/js/catalogo_resenas.js?v=<?= $versionCatalogoResenas ?>" defer></script>
+
+<?php require_once __DIR__ . '/layouts/footer.php'; ?>
 <?php require_once __DIR__ . '/layouts/footer.php'; ?>

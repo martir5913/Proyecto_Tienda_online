@@ -1,8 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/wishlist.php?action=get"
-method: GET
-headers:
-  Accept: application/json
-queryParams:
-  action: get
-order: 3000

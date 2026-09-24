@@ -62,6 +62,18 @@ h6,
     color: #ffffff;
 }
 
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: #fff;
+}
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
 .navbar-custom .nav-link {
     color: #cbd5e1;
     font-weight: 500;
@@ -213,6 +225,22 @@ h6,
     padding: 0.35em 0.65em;
 }
 
+.btn-detalle-producto {
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    height: 40px;
+
+    padding: 0 !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-detalle-producto i {
+    margin: 0 !important;
+}
+
 /* Footer Corporativo */
 .footer-custom {
     background-color: var(--app-dark);
@@ -220,6 +248,25 @@ h6,
     padding: 3.5rem 0 1.5rem;
     margin-top: auto;
 }
+
+
+.site-footer {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.site-footer .footer-text {
+    line-height: 1.6;
+}
+
+.site-footer .footer-list li {
+    margin-bottom: .55rem;
+}
+
+.site-footer .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
 
 .footer-custom h5 {
     color: #ffffff;
@@ -301,9 +348,6 @@ h6,
     transform: scale(1.1);
 }
 
-/* ==========================================================================
-   Hero Banner con Fondo Espejo y Traslúcido (Tecnología y Confort)
-   ========================================================================== */
 .hero-home-section {
     position: relative;
     background: linear-gradient(135deg, #0b1120 0%, #1e1b4b 100%);
@@ -340,3 +384,313 @@ h6,
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
 }
 
+@media (max-width: 767.98px) {
+
+    .footer-custom .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Menos separación vertical entre secciones */
+    .footer-custom .row {
+        --bs-gutter-x: 1rem;
+        --bs-gutter-y: 1.25rem;
+    }
+
+
+    /* Doméstik ocupa todo el ancho */
+    .footer-custom .row > div:nth-child(1) {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+
+
+    /* Categorías y Marcas lado a lado */
+    .footer-custom .row > div:nth-child(2),
+    .footer-custom .row > div:nth-child(3) {
+        flex: 0 0 50%;
+        width: 50%;
+    }
+
+
+    /* Atención y soporte ocupa todo el ancho */
+    .footer-custom .row > div:nth-child(4) {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+
+
+    /* Títulos más compactos */
+    .footer-custom h5 {
+        font-size: .95rem;
+        margin-bottom: .65rem;
+    }
+
+
+    /* Texto general */
+    .footer-custom p,
+    .footer-custom li,
+    .footer-custom a {
+        font-size: .82rem;
+        line-height: 1.45;
+    }
+
+
+    /* Menos espacio entre enlaces */
+    .footer-custom ul li {
+        margin-bottom: .35rem !important;
+    }
+
+
+    /* Descripción de Doméstik */
+    .footer-custom .col-lg-4 p {
+        margin-bottom: .75rem;
+    }
+
+
+    /* Iconos */
+    .footer-custom .fs-5 {
+        font-size: 1rem !important;
+    }
+
+
+    /* Línea inferior */
+    .footer-custom hr {
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+
+    /* Copyright y badge uno debajo del otro */
+    .footer-custom .container > .d-flex:last-child {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: .5rem;
+    }
+
+
+    .footer-custom .container > .d-flex:last-child span {
+        font-size: .78rem;
+        line-height: 1.4;
+    }
+
+
+    .footer-custom .badge {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    /* Reduce separación entre las tarjetas */
+    #grid-productos {
+        --bs-gutter-x: .6rem;
+        --bs-gutter-y: .75rem;
+    }
+
+    /* 2 productos por fila */
+    #grid-productos > .col-md-6 {
+        width: 50%;
+        flex: 0 0 50%;
+        padding-left: .3rem;
+        padding-right: .3rem;
+        margin-bottom: .5rem !important;
+    }
+
+
+    /* Tarjeta completa */
+    #grid-productos .product-card {
+        height: 100%;
+        border-radius: .6rem;
+        overflow: hidden;
+    }
+
+
+    /* Imagen más compacta */
+    #grid-productos .product-img-wrapper {
+        min-height: 145px;
+        height: 145px;
+        padding: .65rem;
+    }
+
+    #grid-productos .product-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+
+    /* Contenido */
+    #grid-productos .product-card-body {
+        padding: .7rem;
+    }
+
+
+    /* Marca */
+    #grid-productos .product-brand {
+        font-size: .68rem;
+    }
+
+
+    /* Nombre del producto */
+    #grid-productos .product-title {
+        font-size: .82rem;
+        line-height: 1.25;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+
+        overflow: hidden;
+        min-height: 2.05rem;
+    }
+
+
+    /* Categoría, descripción, stock y reseñas */
+    #grid-productos .small {
+        font-size: .68rem;
+        line-height: 1.3;
+    }
+
+
+    /* Descripción: máximo 2 líneas */
+    #grid-productos p.text-muted {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
+        min-height: 1.8rem;
+    }
+
+
+    /* Precio */
+    #grid-productos .product-price {
+        font-size: 1.05rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    /* Zona inferior */
+    #grid-productos .mt-auto.pt-2.border-top {
+        margin-top: auto !important;
+        padding-top: .55rem !important;
+    }
+
+
+    /* Botones centrados */
+    #grid-productos .mt-auto .d-flex {
+        justify-content: center;
+        gap: .4rem !important;
+    }
+
+
+    /* Botón detalle y carrito */
+    #grid-productos .btn-detalle-producto,
+    #grid-productos .btn-primary-app {
+        width: 40px;
+        height: 36px;
+        padding: 0;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    /* Reseñas */
+    #grid-productos .btn-catalogo-resenas {
+        width: 100%;
+        text-align: center;
+        font-size: .68rem;
+        white-space: normal;
+    }
+     /* Modal más compacto y con margen */
+    #modalDetalleProducto .modal-dialog {
+        width: calc(100% - 1rem);
+        max-width: none;
+        margin: .5rem auto;
+    }
+
+    /* Evita que el modal sea más alto que la pantalla */
+    #modalDetalleProducto .modal-content {
+        max-height: calc(100dvh - 1rem);
+        overflow: hidden;
+        border-radius: .75rem;
+    }
+
+    /* Header más pequeño */
+    #modalDetalleProducto .modal-header {
+        padding: .7rem .85rem;
+    }
+
+    #modalDetalleProducto .modal-title {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+
+    #modalDetalleProducto .modal-body {
+        padding: .75rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #modalDetalleProducto .row {
+        --bs-gutter-x: .75rem;
+        --bs-gutter-y: .65rem;
+    }
+
+    #modalDetalleProducto .product-img-wrapper {
+        width: 100%;
+        height: 165px !important;
+        min-height: 165px !important;
+        max-height: 165px !important;
+
+        padding: .6rem;
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #modalDetalleProducto .product-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        max-height: 145px;
+        object-fit: contain;
+    }
+
+    #modalDetalleProducto .product-brand {
+        font-size: .72rem;
+    }
+
+    #modalDetalleProducto .small {
+        font-size: .78rem;
+        line-height: 1.35;
+    }
+
+    #modalDetalleProducto p {
+        margin-bottom: .55rem;
+    }
+
+    #modalDetalleProducto .product-price {
+        font-size: 1.15rem;
+        margin-bottom: .7rem !important;
+    }
+
+    #modalDetalleProducto .btn {
+        min-width: 48px;
+        height: 40px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #modalDetalleProducto .d-flex {
+        justify-content: center;
+    }
+}
+}
