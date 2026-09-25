@@ -1,7 +1,6 @@
 <?php
- // * Modelo de Usuario
- // * Responsable de la persistencia, autenticación y consulta de usuarios y roles.
- 
+
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -9,8 +8,9 @@ use PDO;
 
 class Usuario extends Model
 {
-     // * Busca un usuario por su correo electrónico
-     
+    /**
+     * Busca un usuario por su correo electrónico.
+     */
     public function buscarPorCorreo(string $correo): ?array
     {
         $stmt = $this->db->prepare(
@@ -25,8 +25,9 @@ class Usuario extends Model
         return $usuario ?: null;
     }
 
-     // * Registra un nuevo usuario cliente con contraseña cifrada en Bcrypt
-     
+    /**
+     * Registra un nuevo usuario cliente con contraseña cifrada en Bcrypt.
+     */
     public function registrar(array $datos): int
     {
         $sql = "INSERT INTO usuarios (id_rol, id_estado_usuario, nombre, apellido, correo, password, telefono, direccion) 
@@ -34,7 +35,7 @@ class Usuario extends Model
         
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            ':id_rol'    => $datos['id_rol'] ?? 2, // Rol 2: Cliente
+            ':id_rol'    => $datos['id_rol'] ?? 2,
             ':nombre'    => $datos['nombre'],
             ':apellido'  => $datos['apellido'],
             ':correo'    => $datos['correo'],
@@ -46,8 +47,9 @@ class Usuario extends Model
         return (int)$this->db->lastInsertId();
     }
 
-     // * Obtiene el listado completo de usuarios para el panel de administración
-     
+    /**
+     * Obtiene el listado completo de usuarios.
+     */
     public function obtenerTodos(): array
     {
         $stmt = $this->db->query(
@@ -61,7 +63,9 @@ class Usuario extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // * Obtiene listado filtrado de usuarios con soporte para búsqueda y orden
+    /**
+     * Obtiene listado filtrado de usuarios para el panel de administración.
+     */
     public function obtenerListadoAdmin(array $filtros = []): array
     {
         $sql = "SELECT u.id_usuario, u.nombre, u.apellido, u.correo, u.telefono, u.direccion, u.fecha_registro,
@@ -115,7 +119,9 @@ class Usuario extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // * Retorna métricas globales de usuarios para los KPIs del panel
+    /**
+     * Retorna métricas globales de usuarios para los KPIs del panel.
+     */
     public function obtenerResumenMetricas(): array
     {
         $totalUsuarios = (int)$this->db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
@@ -135,7 +141,9 @@ class Usuario extends Model
         ];
     }
 
-    // * Obtiene la información detallada de un usuario por su ID
+    /**
+     * Obtiene la información detallada de un usuario por su ID.
+     */
     public function obtenerPorId(int $id): ?array
     {
         $stmt = $this->db->prepare(
@@ -154,19 +162,25 @@ class Usuario extends Model
         return $usuario ?: null;
     }
 
-    // * Obtiene catálogo de roles
+    /**
+     * Obtiene el catálogo de roles.
+     */
     public function obtenerRoles(): array
     {
         return $this->db->query("SELECT id_rol, nombre_rol, descripcion FROM roles ORDER BY id_rol ASC")->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // * Obtiene catálogo de estados de usuario
+    /**
+     * Obtiene el catálogo de estados de usuario.
+     */
     public function obtenerEstados(): array
     {
         return $this->db->query("SELECT id_estado_usuario, nombre_estado FROM estados_usuario ORDER BY id_estado_usuario ASC")->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // * Actualiza la información de un usuario desde el panel de administración
+    /**
+     * Actualiza la información de un usuario desde el panel de administración.
+     */
     public function actualizarUsuarioAdmin(int $id, array $datos): bool
     {
         $campos = [
@@ -186,7 +200,6 @@ class Usuario extends Model
                     id_rol = :id_rol, 
                     id_estado_usuario = :id_estado_usuario";
 
-        // Si se envió cambio de contraseña
         if (!empty($datos['password'])) {
             $sql .= ", password = :password";
             $campos['password'] = password_hash($datos['password'], PASSWORD_BCRYPT);
@@ -199,7 +212,9 @@ class Usuario extends Model
         return $stmt->execute($campos);
     }
 
-    // * Cambia el estado de un usuario (Activo = 1, Inactivo = 2, Bloqueado = 3)
+    /**
+     * Cambia el estado de un usuario.
+     */
     public function cambiarEstado(int $id, int $idEstado): bool
     {
         $stmt = $this->db->prepare("UPDATE usuarios SET id_estado_usuario = :id_estado WHERE id_usuario = :id");
@@ -209,7 +224,9 @@ class Usuario extends Model
         ]);
     }
 
-    // * Cambia el rol de un usuario (Admin = 1, Cliente = 2)
+    /**
+     * Cambia el rol de un usuario.
+     */
     public function cambiarRol(int $id, int $idRol): bool
     {
         $stmt = $this->db->prepare("UPDATE usuarios SET id_rol = :id_rol WHERE id_usuario = :id");
@@ -219,7 +236,9 @@ class Usuario extends Model
         ]);
     }
 
-    // * Actualiza la información del perfil propio del cliente
+    /**
+     * Actualiza la información del perfil propio del cliente.
+     */
     public function actualizarPerfilPropio(int $id, array $datos): bool
     {
         $stmt = $this->db->prepare(
@@ -239,7 +258,9 @@ class Usuario extends Model
         ]);
     }
 
-    // * Actualiza la contraseña cifrada de un usuario
+    /**
+     * Actualiza la contraseña cifrada de un usuario.
+     */
     public function actualizarPassword(int $id, string $nuevaPassword): bool
     {
         $stmt = $this->db->prepare("UPDATE usuarios SET password = :hash WHERE id_usuario = :id");

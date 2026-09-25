@@ -43,7 +43,7 @@ require_once dirname(__DIR__) . '/layouts/header.php';
         </a>
     </div>
 
-    <!-- Tarjetas de Métricas Rápidas (KPIs) -->
+    <!-- Tarjetas de Métricas Rápidas -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-4 col-xl">
             <div class="card border-0 shadow-sm rounded-3 p-3 h-100">

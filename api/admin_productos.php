@@ -1,6 +1,6 @@
 <?php
-// RF16 - API administrativa de productos.
-// Solo accesible para usuarios con rol Administrador.
+
+declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
@@ -14,6 +14,9 @@ AuthMiddleware::verificarAdmin();
 
 $productoCtrl = new ProductoController();
 
+/**
+ * Valida la autenticidad del token CSRF en operaciones de productos.
+ */
 function validarCsrfAdminProductos(): void
 {
     $tokenSesion = $_SESSION['csrf_admin_productos'] ?? '';
@@ -153,6 +156,6 @@ try {
 } catch (RuntimeException $e) {
     jsonResponse(false, $e->getMessage(), null, 404);
 } catch (Throwable $e) {
-    error_log('RF16 productos: ' . $e->getMessage());
+    error_log('Admin productos API: ' . $e->getMessage());
     jsonResponse(false, 'Ocurrió un error al procesar la operación de productos.', null, 500);
 }

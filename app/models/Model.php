@@ -1,7 +1,6 @@
 <?php
- // * Clase Base Model
- // * Proporciona acceso a la instancia PDO compartida y métodos comunes de consulta.
- 
+
+declare(strict_types=1);
 
 namespace App\Models;
 

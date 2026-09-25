@@ -23,5 +23,8 @@ Thumbs.db
 /temp/
 /tmp/
 
+# Documentación interna del proyecto
+/Docs/
+
 # Archivos subidos por usuarios durante pruebas locales
 /public/uploads/temp/

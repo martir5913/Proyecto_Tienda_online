@@ -1,15 +1,12 @@
 <?php
-// * API Endpoint: Carrito de Compras
-// * Acciones: add, update, remove, get, clear
- 
+
+declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
 require_once dirname(__DIR__) . '/app/models/Model.php';
 require_once dirname(__DIR__) . '/app/models/Producto.php';
-if (!class_exists('App\Controllers\CarritoController')) {
-    require_once dirname(__DIR__) . '/app/controllers/CarritoController.php';
-}
+require_once dirname(__DIR__) . '/app/controllers/CarritoController.php';
 
 use App\Controllers\CarritoController;
 

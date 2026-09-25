@@ -7,10 +7,7 @@ namespace App\Models;
 use PDO;
 
 /**
- * RF14 - Reseñas y calificaciones.
- *
- * La autorización real para reseñar se valida contra pedidos entregados.
- * El id_usuario siempre proviene de la sesión, nunca del navegador.
+ * Modelo de Reseñas y calificaciones de productos.
  */
 class Resena extends Model
 {

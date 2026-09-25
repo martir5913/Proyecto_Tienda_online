@@ -1,16 +1,9 @@
--- =============================================================================
--- PROCEDIMIENTOS ALMACENADOS (STORED PROCEDURES / USP) - MYSQL 8.0
--- BD: tienda_electrodomesticos | Motor: InnoDB (Transacciones ACID)
--- =============================================================================
-
+-- Procedimientos almacenados para MySQL 8.0 / InnoDB
 USE `tienda_electrodomesticos`;
 
 DELIMITER $$
 
--- -----------------------------------------------------------------------------
--- 1. USP: usp_obtener_metricas_dashboard
--- Proposito: Calcula de forma centralizada los KPIs para el panel de administracion
--- -----------------------------------------------------------------------------
+-- Obtiene métricas y KPIs consolidados para el dashboard administrativo
 DROP PROCEDURE IF EXISTS `usp_obtener_metricas_dashboard`$$
 CREATE PROCEDURE `usp_obtener_metricas_dashboard`()
 BEGIN
@@ -23,10 +16,7 @@ BEGIN
         (SELECT COUNT(*) FROM productos WHERE stock <= 5 AND id_estado_producto = 1) AS productos_bajo_stock;
 END$$
 
--- -----------------------------------------------------------------------------
--- 2. USP: usp_cambiar_estado_pedido
--- Proposito: Actualiza el estado de una orden. Si se cancela (estado 5), reintegra el stock.
--- -----------------------------------------------------------------------------
+-- Actualiza el estado de un pedido y reintegra stock si se cancela
 DROP PROCEDURE IF EXISTS `usp_cambiar_estado_pedido`$$
 CREATE PROCEDURE `usp_cambiar_estado_pedido`(
     IN p_id_pedido INT,
@@ -56,7 +46,7 @@ proc_label: BEGIN
 
     START TRANSACTION;
 
-    -- Si se cambia a Cancelado (5) y antes no estaba cancelado, reponer stock
+    -- Si se cancela el pedido, reponer inventario
     IF p_nuevo_estado = 5 AND v_estado_actual != 5 THEN
         UPDATE productos p
         INNER JOIN detalle_pedido dp ON p.id_producto = dp.id_producto
@@ -64,7 +54,7 @@ proc_label: BEGIN
         WHERE dp.id_pedido = p_id_pedido;
     END IF;
 
-    -- Actualizar estado
+    -- Actualizar estado del pedido
     UPDATE pedidos 
     SET id_estado_pedido = p_nuevo_estado 
     WHERE id_pedido = p_id_pedido;
@@ -75,10 +65,7 @@ proc_label: BEGIN
     SET p_resultado_mensaje = 'Estado de pedido actualizado correctamente';
 END$$
 
--- -----------------------------------------------------------------------------
--- 3. USP: usp_filtrar_catalogo
--- Proposito: Consulta optimizada de electrodomesticos con filtros opcionales
--- -----------------------------------------------------------------------------
+-- Consulta de catálogo con filtros combinados
 DROP PROCEDURE IF EXISTS `usp_filtrar_catalogo`$$
 CREATE PROCEDURE `usp_filtrar_catalogo`(
     IN p_id_categoria INT,

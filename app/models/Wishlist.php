@@ -1,6 +1,6 @@
 <?php
- //* Modelo de Wishlist (Lista de Deseos)
- 
+
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -8,8 +8,9 @@ use PDO;
 
 class Wishlist extends Model
 {
-     // * Agrega un producto a la lista de deseos del usuario
-     
+    /**
+     * Agrega un producto a la lista de deseos del usuario.
+     */
     public function agregar(int $idUsuario, int $idProducto): bool
     {
         $stmt = $this->db->prepare(
@@ -23,8 +24,9 @@ class Wishlist extends Model
         ]);
     }
 
-     // * Elimina un producto de la lista de deseos
-     
+    /**
+     * Elimina un producto de la lista de deseos.
+     */
     public function eliminar(int $idUsuario, int $idProducto): bool
     {
         $stmt = $this->db->prepare(
@@ -36,8 +38,9 @@ class Wishlist extends Model
         ]);
     }
 
-     // * Obtiene los productos en la lista de deseos del usuario
-     
+    /**
+     * Obtiene los productos en la lista de deseos del usuario.
+     */
     public function obtenerPorUsuario(int $idUsuario): array
     {
         $stmt = $this->db->prepare(

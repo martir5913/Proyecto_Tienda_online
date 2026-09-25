@@ -1,13 +1,10 @@
 <?php
- // * Controlador del Carrito de Compras
- // * Gestiona los artículos seleccionados en la sesión del usuario.
- 
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
 use App\Models\Producto;
-
-if (!class_exists('App\Controllers\CarritoController', false)) {
 
 class CarritoController
 {
@@ -21,8 +18,9 @@ class CarritoController
         }
     }
 
-    // * Agrega o incrementa un producto en el carrito
-     
+    /**
+     * Agrega o incrementa un producto en el carrito.
+     */
     public function agregar(int $idProducto, int $cantidad = 1): array
     {
         $producto = $this->productoModel->obtenerPorId($idProducto);
@@ -57,8 +55,9 @@ class CarritoController
         ];
     }
 
-    // * Actualiza la cantidad de un artículo en el carrito
-     
+    /**
+     * Actualiza la cantidad de un artículo en el carrito.
+     */
     public function actualizarCantidad(int $idProducto, int $cantidad): array
     {
         if ($cantidad <= 0) {
@@ -78,8 +77,9 @@ class CarritoController
         return ['success' => true, 'message' => 'Cantidad actualizada.', 'resumen' => $this->obtenerResumen()];
     }
 
-    // * Elimina un artículo del carrito
-     
+    /**
+     * Elimina un artículo del carrito.
+     */
     public function eliminar(int $idProducto): array
     {
         unset($_SESSION['carrito'][$idProducto]);
@@ -91,8 +91,9 @@ class CarritoController
         ];
     }
 
-    // * Retorna el número total de unidades en el carrito
-     
+    /**
+     * Retorna el número total de unidades en el carrito.
+     */
     public function contarItems(): int
     {
         $count = 0;
@@ -102,8 +103,9 @@ class CarritoController
         return $count;
     }
 
-    // * Calcula subtotales, IVA y total general del carrito
-     
+    /**
+     * Calcula subtotales, IVA y total general del carrito.
+     */
     public function obtenerResumen(): array
     {
         $subtotal = 0.0;
@@ -125,13 +127,12 @@ class CarritoController
         ];
     }
 
-    // * Vacía el carrito de compras
-     
+    /**
+     * Vacía el carrito de compras.
+     */
     public function vaciar(): void
     {
         $_SESSION['carrito'] = [];
     }
-}
-
 }
 

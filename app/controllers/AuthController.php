@@ -1,11 +1,11 @@
 <?php
- // * Controlador de Autenticación
- // * Maneja login, registro y cierre de sesión de usuarios.
- 
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
 use App\Models\Usuario;
+use App\Services\EmailService;
 
 class AuthController
 {
@@ -16,8 +16,9 @@ class AuthController
         $this->usuarioModel = new Usuario();
     }
 
-    // * Procesa el inicio de sesión
-    
+    /**
+     * Procesa el inicio de sesión del usuario.
+     */
     public function login(string $correo, string $password): array
     {
         $usuario = $this->usuarioModel->buscarPorCorreo($correo);
@@ -26,7 +27,6 @@ class AuthController
             return ['success' => false, 'message' => 'Credenciales inválidas. Verifique correo y contraseña.'];
         }
 
-        // Validar si la cuenta está inactiva o bloqueada
         $idEstado = (int)($usuario['id_estado_usuario'] ?? 1);
         if ($idEstado !== 1) {
             if ($idEstado === 2) {
@@ -38,7 +38,6 @@ class AuthController
             return ['success' => false, 'message' => 'Tu cuenta se encuentra deshabilitada. Contacta al soporte técnico.'];
         }
 
-        // Guardar datos seguros en sesión
         $_SESSION['usuario'] = [
             'id_usuario'  => $usuario['id_usuario'],
             'nombre'      => $usuario['nombre'],
@@ -53,8 +52,9 @@ class AuthController
         return ['success' => true, 'message' => 'Sesión iniciada correctamente.', 'usuario' => $_SESSION['usuario']];
     }
 
-    // * Procesa el registro de un nuevo cliente
-    
+    /**
+     * Procesa el registro de un nuevo cliente.
+     */
     public function registrar(array $datos): array
     {
         $password = $datos['password'] ?? '';

@@ -1,24 +1,23 @@
 <?php
- // * Configuración General del Sistema
- // * Define constantes globales, inicializa la sesión y helpers de seguridad.
 
-// Iniciar sesión si no está iniciada
+declare(strict_types=1);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Configuración de visualización de errores según entorno
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-// Constantes de rutas base
 define('BASE_DIR', dirname(__DIR__));
 define('APP_DIR', BASE_DIR . '/app');
 define('VIEWS_DIR', BASE_DIR . '/views');
 define('PUBLIC_DIR', BASE_DIR . '/public');
 
-// Función helper para leer variables de entorno con valor por defecto
+/**
+ * Obtiene el valor de una variable de entorno con fallback por defecto.
+ */
 function env(string $key, mixed $default = null): mixed
 {
     $val = getenv($key);
@@ -28,7 +27,7 @@ function env(string $key, mixed $default = null): mixed
     return $_ENV[$key] ?? $default;
 }
 
-// Cargar variables de entorno desde .env si existe
+// Carga de variables de entorno desde .env
 (function () {
     $envPath = BASE_DIR . '/.env';
     if (!file_exists($envPath)) {
@@ -52,7 +51,7 @@ function env(string $key, mixed $default = null): mixed
     }
 })();
 
-// Cargar autoloader de Composer si existe (PHPMailer, etc.)
+// Autoloader Composer (PHPMailer y dependencias)
 if (file_exists(BASE_DIR . '/vendor/autoload.php')) {
     require_once BASE_DIR . '/vendor/autoload.php';
 }

@@ -1,7 +1,6 @@
 <?php
- // * API Endpoint: Autenticación de Usuarios
- // * Acciones soportadas: login, registro, logout, check
- 
+
+declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
@@ -16,7 +15,7 @@ header('Content-Type: application/json; charset=utf-8');
 $authCtrl = new AuthController();
 $action = $_GET['action'] ?? ($_POST['action'] ?? 'check');
 
-// Capturar datos JSON si vienen por body
+// Lectura de parámetros JSON y POST
 $inputJSON = json_decode(file_get_contents('php://input'), true) ?? [];
 $params = array_merge($_POST, $inputJSON);
 

@@ -23,7 +23,7 @@ $pedidoAdminModel = new PedidoAdmin();
 // Obtener lista de pedidos recientes para previsualizar
 $pedidosDisponibles = $pedidoAdminModel->obtenerPedidos(['orden' => 'recientes']);
 
-// Determinar el pedido a mostrar (por defecto el demo)
+// Determinar el pedido a mostrar
 $idPedidoSeleccionado = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) ?: 0;
 
 $mensajeEnvioPrueba = null;
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_prueba'])) {
     }
 }
 
-// Si se pide solo el contenido HTML aislado (para el iframe)
+// Si se pide solo el contenido HTML aislado
 if (isset($_GET['modo']) && $_GET['modo'] === 'raw') {
     $pedidoActual = ($idPedidoSeleccionado > 0)
         ? ($pedidoAdminModel->obtenerDetalle($idPedidoSeleccionado) ?: $emailService->obtenerPedidoMuestra())

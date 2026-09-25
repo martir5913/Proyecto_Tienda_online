@@ -1,5 +1,5 @@
 <?php
-// RF16 - Administrar productos
+
 $tituloPagina = 'Administrar Productos | Doméstik';
 $scriptEspecifico = 'admin_productos.js';
 

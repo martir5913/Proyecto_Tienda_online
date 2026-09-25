@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-// RF17 - API administrativa de categorías.
-
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';

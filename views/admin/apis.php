@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-// RF19 - Consultar información mediante API.
 // Consola de pruebas disponible únicamente para administradores.
 
 $tituloPagina = 'Pruebas de API | Domestik';
@@ -13,8 +12,6 @@ require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';
 use App\Middlewares\AuthMiddleware;
 
 AuthMiddleware::verificarAdmin();
-
-
 
 /*APIs disponibles*/
 

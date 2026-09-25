@@ -1,6 +1,6 @@
 <?php
- // * Modelo de Marca
- 
+
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -8,8 +8,9 @@ use PDO;
 
 class Marca extends Model
 {
-    // * Obtiene todas las marcas activas con el conteo de sus productos
-    // prueba 
+    /**
+     * Obtiene todas las marcas activas con el conteo de sus productos disponibles.
+     */
     public function obtenerTodas(): array
     {
         $stmt = $this->db->query(

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-// RF17 - Administrar categorías.
 $tituloPagina = 'Administrar Categorías | Doméstik';
 $scriptEspecifico = 'admin_categorias.js';
 

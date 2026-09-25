@@ -6,12 +6,8 @@ require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
 require_once dirname(__DIR__) . '/app/models/Model.php';
 require_once dirname(__DIR__) . '/app/models/Producto.php';
-if (!class_exists('App\Controllers\CarritoController')) {
-    require_once dirname(__DIR__) . '/app/controllers/CarritoController.php';
-}
-if (!class_exists('App\Controllers\PedidoController')) {
-    require_once dirname(__DIR__) . '/app/controllers/PedidoController.php';
-}
+require_once dirname(__DIR__) . '/app/controllers/CarritoController.php';
+require_once dirname(__DIR__) . '/app/controllers/PedidoController.php';
 require_once dirname(__DIR__) . '/app/middlewares/AuthMiddleware.php';
 
 use App\Controllers\PedidoController;
