@@ -16,7 +16,7 @@
 *.sublime-workspace
 .DS_Store
 Thumbs.db
-
+*.rar
 # Logs y temporales
 *.log
 /logs/
