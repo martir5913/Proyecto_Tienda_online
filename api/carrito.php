@@ -1,8 +1,6 @@
 <?php
-/**
- * API Endpoint: Carrito de Compras
- * Acciones: add, update, remove, get, clear
- */
+
+declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
@@ -37,7 +35,7 @@ switch ($action) {
     case 'remove':
         $id = (int)($params['id_producto'] ?? 0);
         $res = $carritoCtrl->eliminar($id);
-        jsonResponse($res['success'], $res['message'], $res, 200);
+        jsonResponse($res['success'], $res['message'], $res['resumen'] ?? null, 200);
         break;
 
     case 'clear':

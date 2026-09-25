@@ -1,8 +1,6 @@
 <?php
-/**
- * API Endpoint: Autenticación de Usuarios
- * Acciones soportadas: login, registro, logout, check
- */
+
+declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
@@ -17,7 +15,7 @@ header('Content-Type: application/json; charset=utf-8');
 $authCtrl = new AuthController();
 $action = $_GET['action'] ?? ($_POST['action'] ?? 'check');
 
-// Capturar datos JSON si vienen por body
+// Lectura de parámetros JSON y POST
 $inputJSON = json_decode(file_get_contents('php://input'), true) ?? [];
 $params = array_merge($_POST, $inputJSON);
 
@@ -43,6 +41,26 @@ switch ($action) {
     case 'logout':
         $authCtrl->logout();
         jsonResponse(true, "Sesión cerrada exitosamente.");
+        break;
+
+    case 'solicitar_recuperacion':
+        $correo = trim($params['correo'] ?? '');
+        if (empty($correo)) {
+            jsonResponse(false, "El correo electrónico es obligatorio.", null, 400);
+        }
+        $res = $authCtrl->solicitarRecuperacion($correo);
+        jsonResponse($res['success'], $res['message'], null, $res['success'] ? 200 : 400);
+        break;
+
+    case 'restablecer_password':
+        $token = trim($params['token'] ?? '');
+        $password = trim($params['password'] ?? '');
+        $passwordConfirm = trim($params['password_confirm'] ?? '');
+        if (empty($token) || empty($password)) {
+            jsonResponse(false, "El token y la nueva contraseña son obligatorios.", null, 400);
+        }
+        $res = $authCtrl->restablecerPasswordConToken($token, $password, $passwordConfirm);
+        jsonResponse($res['success'], $res['message'], null, $res['success'] ? 200 : 400);
         break;
 
     case 'check':

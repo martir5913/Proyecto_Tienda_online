@@ -1,9 +1,9 @@
 <?php
-/**
- * Header Global - Layout Principal
- */
+// Header Global - Layout Principal
 require_once dirname(__DIR__, 2) . '/config/config.php';
-require_once dirname(__DIR__, 2) . '/app/controllers/CarritoController.php';
+if (!class_exists('App\Controllers\CarritoController')) {
+    require_once dirname(__DIR__, 2) . '/app/controllers/CarritoController.php';
+}
 
 use App\Controllers\CarritoController;
 
@@ -15,13 +15,45 @@ $totalCarrito = $carritoCtrl->contarItems();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $tituloPagina ?? 'ElectroHogar | Tienda en Línea de Electrodomésticos' ?></title>
+    <title><?= $tituloPagina ?? 'Doméstik | Tienda en Línea de Electrodomésticos' ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/public/favicon.ico">
+
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="<?= BASE_URL ?>/public/css/app.css" rel="stylesheet">
+    <?php
+    $rutaCss = PUBLIC_DIR . '/css/app.css';
+    $versionCss = file_exists($rutaCss) ? filemtime($rutaCss) : time();
+    ?>
+
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/public/css/app.css?v=<?= $versionCss ?>"
+    >
+    <?php if (isset($cssEspecifico)): ?>
+        <?php
+        $rutaCssEspecifico =
+            PUBLIC_DIR . '/css/' . $cssEspecifico;
+
+        $versionCssEspecifico =
+            file_exists($rutaCssEspecifico)
+                ? filemtime($rutaCssEspecifico)
+                : time();
+        ?>
+
+        <link
+            rel="stylesheet"
+            href="<?= BASE_URL ?>/public/css/<?= htmlspecialchars(
+                $cssEspecifico,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>?v=<?= $versionCssEspecifico ?>"
+        >
+    <?php endif; ?>
+    
 </head>
 <body>
 
@@ -30,7 +62,7 @@ $totalCarrito = $carritoCtrl->contarItems();
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="<?= BASE_URL ?>/index.php">
                 <i class="bi bi-lightning-charge-fill text-warning me-2 fs-4"></i>
-                <span>ElectroHogar</span>
+                <span>Doméstik</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -82,10 +114,17 @@ $totalCarrito = $carritoCtrl->contarItems();
                                 <span><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=perfil"><i class="bi bi-person-gear me-2"></i>Mi Perfil</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=mis_pedidos"><i class="bi bi-bag-check me-2"></i>Mis Pedidos</a></li>
                                 <?php if (esAdmin()): ?>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-primary" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Panel Administrador</a></li>
+                                    <li><h6 class="dropdown-header text-primary fw-bold">Administración</h6></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_productos"><i class="bi bi-boxes me-2"></i>Inventario y Productos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_categorias"><i class="bi bi-tags me-2"></i>Gestión de Categorías</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"><i class="bi bi-receipt me-2"></i>Pedidos y Envíos</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"><i class="bi bi-people me-2"></i>Gestión de Usuarios</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/index.php?ruta=admin_preview_email"><i class="bi bi-envelope-paper-heart me-2"></i>Plantilla de Correo</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>/index.php?ruta=logout"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>

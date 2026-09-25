@@ -1,8 +1,6 @@
 <?php
-/**
- * Vista: Dashboard de Administración
- */
-$tituloPagina = "Panel Administrador | ElectroHogar";
+// Vista: Dashboard de Administración
+$tituloPagina = "Panel Administrador | Doméstik";
 $scriptEspecifico = "admin.js";
 
 require_once dirname(__DIR__, 2) . '/app/middlewares/AuthMiddleware.php';
@@ -98,15 +96,47 @@ require_once dirname(__DIR__) . '/layouts/header.php';
                 <h5 class="fw-bold mb-3"><i class="bi bi-gear me-2"></i>Módulos de Gestión</h5>
                 <p class="text-muted small">Acceso directo a las operaciones CRUD normalizadas del sistema:</p>
                 <div class="list-group list-group-flush">
-                    <a href="<?= BASE_URL ?>/index.php?ruta=catalogo" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div><i class="bi bi-boxes me-2 text-primary"></i> Mantenimiento de Catálogo y Precios</div>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_productos" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div><i class="bi bi-boxes me-2 text-primary"></i> Administrar inventario y productos</div>
                         <i class="bi bi-chevron-right text-muted"></i>
                     </a>
-                    <a href="<?= BASE_URL ?>/index.php?ruta=mis_pedidos" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div><i class="bi bi-receipt me-2 text-primary"></i> Control de Pedidos y Envíos</div>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_categorias" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div><i class="bi bi-tags me-2 text-primary"></i> Administrar categorías</div>
                         <i class="bi bi-chevron-right text-muted"></i>
                     </a>
-                </div>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_pedidos"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-receipt me-2 text-primary"></i>
+                            Control de Pedidos y Envíos
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_usuarios"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-people-fill me-2 text-primary"></i>
+                            Gestión de Usuarios y Roles
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_apis"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-braces-asterisk me-2 text-primary"></i>
+                            Pruebas de API
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                    <a href="<?= BASE_URL ?>/index.php?ruta=admin_preview_email"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-envelope-paper-heart me-2 text-primary"></i>
+                            Validador de Plantilla de Correo
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                 </div>
             </div>
         </div>
 

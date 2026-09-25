@@ -1,6 +1,4 @@
-# =============================================================================
 # GITIGNORE - TIENDA EN LINEA DE ELECTRODOMESTICOS
-# =============================================================================
 
 # Variables de entorno sensibles
 .env
@@ -24,6 +22,9 @@ Thumbs.db
 /logs/
 /temp/
 /tmp/
+
+# Documentación interna del proyecto
+/Docs/
 
 # Archivos subidos por usuarios durante pruebas locales
 /public/uploads/temp/

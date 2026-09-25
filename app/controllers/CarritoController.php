@@ -1,8 +1,6 @@
 <?php
-/**
- * Controlador del Carrito de Compras
- * Gestiona los artículos seleccionados en la sesión del usuario.
- */
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -21,7 +19,7 @@ class CarritoController
     }
 
     /**
-     * Agrega o incrementa un producto en el carrito
+     * Agrega o incrementa un producto en el carrito.
      */
     public function agregar(int $idProducto, int $cantidad = 1): array
     {
@@ -58,7 +56,7 @@ class CarritoController
     }
 
     /**
-     * Actualiza la cantidad de un artículo en el carrito
+     * Actualiza la cantidad de un artículo en el carrito.
      */
     public function actualizarCantidad(int $idProducto, int $cantidad): array
     {
@@ -80,7 +78,7 @@ class CarritoController
     }
 
     /**
-     * Elimina un artículo del carrito
+     * Elimina un artículo del carrito.
      */
     public function eliminar(int $idProducto): array
     {
@@ -94,7 +92,7 @@ class CarritoController
     }
 
     /**
-     * Retorna el número total de unidades en el carrito
+     * Retorna el número total de unidades en el carrito.
      */
     public function contarItems(): int
     {
@@ -106,7 +104,7 @@ class CarritoController
     }
 
     /**
-     * Calcula subtotales, IVA y total general del carrito
+     * Calcula subtotales, IVA y total general del carrito.
      */
     public function obtenerResumen(): array
     {
@@ -130,10 +128,11 @@ class CarritoController
     }
 
     /**
-     * Vacía el carrito de compras
+     * Vacía el carrito de compras.
      */
     public function vaciar(): void
     {
         $_SESSION['carrito'] = [];
     }
 }
+

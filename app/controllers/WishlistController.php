@@ -1,7 +1,6 @@
 <?php
-/**
- * Controlador de Wishlist (Lista de Deseos)
- */
+ // * Controlador de Wishlist (Lista de Deseos)
+ 
 
 namespace App\Controllers;
 

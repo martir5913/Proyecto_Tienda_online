@@ -1,14 +1,13 @@
 <?php
-/**
- * Middleware de Autenticación y Autorización por Roles
- */
+
+declare(strict_types=1);
 
 namespace App\Middlewares;
 
 class AuthMiddleware
 {
     /**
-     * Verifica que el usuario haya iniciado sesión
+     * Verifica que el usuario haya iniciado sesión activa.
      */
     public static function verificarAutenticado(): void
     {
@@ -23,7 +22,7 @@ class AuthMiddleware
     }
 
     /**
-     * Verifica que el usuario autenticado posea el rol de Administrador
+     * Verifica que el usuario autenticado posea el rol de Administrador.
      */
     public static function verificarAdmin(): void
     {

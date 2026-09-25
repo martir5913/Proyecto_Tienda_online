@@ -1,8 +1,6 @@
 <?php
-/**
- * Clase de Conexión a Base de Datos (PDO Singleton)
- * Provee una única instancia de conexión para evitar sobrecarga y asegurar ACID.
- */
+
+declare(strict_types=1);
 
 namespace Config;
 
@@ -14,7 +12,7 @@ class Database
     private static ?PDO $instance = null;
 
     /**
-     * Carga variables desde el archivo .env si existe
+     * Carga variables de entorno desde el archivo .env si está disponible.
      */
     private static function loadEnv(string $path): void
     {
@@ -32,9 +30,7 @@ class Database
             if (str_contains($line, '=')) {
                 [$key, $value] = explode('=', $line, 2);
                 $key = trim($key);
-                $value = trim($value);
-                // Quitar comillas si las contiene
-                $value = trim($value, "\"'");
+                $value = trim(trim($value), "\"'");
                 if (!array_key_exists($key, $_ENV)) {
                     $_ENV[$key] = $value;
                     putenv("$key=$value");
@@ -44,7 +40,7 @@ class Database
     }
 
     /**
-     * Obtiene la conexión PDO activa o crea una nueva si no existe
+     * Retorna la instancia única de conexión PDO (Singleton).
      */
     public static function getConnection(): PDO
     {
@@ -71,13 +67,17 @@ class Database
             try {
                 self::$instance = new PDO($dsn, $user, $pass, $options);
             } catch (PDOException $e) {
-                // Si falla con 'database', reintentar con '127.0.0.1' y puerto '3308' (entorno local fuera de docker)
-                try {
-                    $fallbackDsn = "mysql:host=127.0.0.1;port=3308;dbname={$db};charset={$charset}";
-                    self::$instance = new PDO($fallbackDsn, $user, $pass, $options);
-                } catch (PDOException $e2) {
-                    throw new PDOException("Error de conexión a la base de datos: " . $e2->getMessage(), (int)$e2->getCode());
+                // Solo intentar fallback a Docker/XAMPP local si host por defecto era 'database'
+                if ($host === 'database') {
+                    try {
+                        $fallbackDsn = "mysql:host=127.0.0.1;port=3308;dbname={$db};charset={$charset}";
+                        self::$instance = new PDO($fallbackDsn, $user, $pass, $options);
+                        return self::$instance;
+                    } catch (PDOException $e2) {
+                        throw new PDOException("Error de conexión a la base de datos (Host: {$host}): " . $e->getMessage(), (int)$e->getCode());
+                    }
                 }
+                throw new PDOException("Error de conexión a la base de datos (Host: {$host}, BD: {$db}, Usuario: {$user}): " . $e->getMessage(), (int)$e->getCode());
             }
         }
 

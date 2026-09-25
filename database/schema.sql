@@ -1,7 +1,4 @@
--- =============================================================================
 -- ESQUEMA DE BASE DE DATOS: TIENDA EN LINEA DE ELECTRODOMESTICOS Y LINEA BLANCA
--- Base de Datos Normalizada (3FN), Motor InnoDB (ACID) y Sin Tipos ENUM
--- =============================================================================
 
 CREATE DATABASE IF NOT EXISTS `tienda_electrodomesticos` 
 CHARACTER SET utf8mb4 

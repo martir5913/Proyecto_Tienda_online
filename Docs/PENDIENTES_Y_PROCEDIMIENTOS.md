@@ -1,6 +1,6 @@
 # Documentación Técnica: Requerimientos Pendientes, Archivos y Procedimientos Almacenados (USP)
 
-## Proyecto: Tienda en Línea de Electrodomésticos y Línea Blanca (ElectroHogar)
+## Proyecto: Tienda en Línea de Electrodomésticos y Línea Blanca (Doméstik)
 - **Fecha de Entrega**: 25 de Septiembre 2026
 - **Base de Datos**: MySQL 8.0 (InnoDB) en Docker (`mysql_database`)
 - **Arquitectura**: MVC Ligero + API REST JSON + Stored Procedures (USP) + Bootstrap 5.3
@@ -154,3 +154,7 @@ Rama: feature/desarrollador-1             Rama: feature/desarrollador-2
                             ▼
              Merge a Main (Entrega 25 Sep)
 ```
+
+## actualizacion css de imagenes
+--bordes
+--tamaño

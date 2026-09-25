@@ -1,6 +1,4 @@
--- =============================================================================
 -- DATOS SEMILLA (SEEDS): TIENDA EN LINEA DE ELECTRODOMESTICOS Y LINEA BLANCA
--- =============================================================================
 
 USE `tienda_electrodomesticos`;
 
